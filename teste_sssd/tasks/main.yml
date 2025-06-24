@@ -1,0 +1,21 @@
+---
+- name: Verifica o daemon do sssd
+  block:
+    - name: Coleta dos facts de serviços
+      ansible.builtin.service_facts:
+     
+    - name: Testa se o sssd está no ar e habilitado no boot
+      ansible.builtin.assert:
+        that:
+          - ansible_facts['services']['sssd.service']['state'] == 'running'
+          - ansible_facts['services']['sssd.service']['status'] == 'enabled'
+     
+    - name: Considera OK para o relatório final
+      ansible.builtin.set_fact:
+        teste_sssd: OK
+     
+  rescue:
+    - name: Considera NOK para o relatório final
+      ansible.builtin.set_fact:
+        teste_sssd: FAIL
+

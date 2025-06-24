@@ -1,0 +1,60 @@
+---
+- name: Teste de conectividade com LDAP
+  block:
+    - name: Busca o arquivo de cache
+      ansible.builtin.fetch:
+        src: /var/lib/sss/db/cache_{{ teste_ldap_dominio }}.ldb
+        dest: ./
+
+    - name: Executa o domando ldbsearch
+      ansible.builtin.shell: ldbsearch -H {{ inventory_hostname }}/var/lib/sss/db/cache_{{ teste_ldap_dominio }}.ldb "name={{ teste_ldap_usuario_teste_auth }}@{{ teste_ldap_dominio }}" dn
+      delegate_to: localhost
+      register: raw_output_ldbsearch
+
+    - name: Alimenta a lista lista_registros_encontrados_ldb com as entradas do cache
+      loop: "{{ raw_output_ldbsearch.stdout_lines | select('search', '^dn:') }}"
+      ansible.builtin.set_fact:
+        lista_registros_encontrados_ldb: "{{ lista_registros_encontrados_ldb + [(item | split())[1]] }}"
+
+    - name: Remove as entradas do cache
+      loop: "{{ lista_registros_encontrados_ldb }}"
+      delegate_to: localhost
+      ansible.builtin.shell: ldbdel -H {{ inventory_hostname }}/var/lib/sss/db/cache_{{ teste_ldap_dominio }}.ldb {{ item }}
+
+    - name: Copia o cache de volta para a máquina
+      ansible.builtin.copy:
+        src: "{{ inventory_hostname }}/var/lib/sss/db/cache_{{ teste_ldap_dominio }}.ldb"
+        dest: /var/lib/sss/db
+        mode: 0600
+        owner: root
+        group: root
+
+    - name: Remove o diretório com o cache # Isso será dispensável quando usar um EE
+      delegate_to: localhost
+      ansible.builtin.file:
+        path: "{{ inventory_hostname }}"
+        state: absent
+
+    - name: Reinicia o daemon do sssd
+      ansible.builtin.systemd_service:
+        state: restarted
+        name: sssd
+
+    - name: Garante a existência do pacote sssd-tools
+      ansible.builtin.dnf:
+        name: sssd-tools
+        state: present
+
+    - name: Faz o sssd consultar a exitencia do usuário {{ teste_ldap_usuario_teste_auth }}
+      ansible.builtin.shell: sssctl user-checks {{ teste_ldap_usuario_teste_auth }}
+      register: raw_output_sssctl_user_check
+
+    - name: Considera OK para o relatório final
+      ansible.builtin.set_fact:
+        teste_ldap: OK
+
+  rescue:
+    - name: Considera NOK para o relatório final
+      ansible.builtin.set_fact:
+        teste_ldap: FAIL
+

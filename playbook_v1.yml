@@ -1,0 +1,138 @@
+---
+- name: Play que testa os itens de autenticação
+  hosts: clienterhel9.s2linux.local, clienterhel10.s2linux.local
+  gather_facts: false
+  vars:
+    dominio: s2linux.local
+    usuario_teste_auth: roger
+    lista_registros_encontrados_ldb: []
+  tasks:
+    - name: Gera a lista de máquinas de destino da automação
+      run_once: true
+      delegate_facts: true
+      delegate_to: localhost
+      ansible.builtin.set_fact:
+        lista_servers_play_inicial: "{{ ansible_play_hosts }}"
+
+    - name: Verifica uso do sss no /etc/nsswitch.conf
+      block:
+        - name: Captura o conteúdo do /etc/nsswitch.conf
+          ansible.builtin.slurp:
+            src: /etc/nsswitch.conf
+          register: raw_output_nsswitch
+
+        - name: Testa presença da string "sss" nos itens passwd e group
+          loop:
+            - passwd
+            - group
+          ansible.builtin.assert:
+            that: "'sss' in raw_output_nsswitch['content'] | b64decode | regex_search('^{{ item }}:.*', multiline=true)"
+
+        - name: Considera OK para o relatório final
+          delegate_to: localhost
+          ansible.builtin.set_fact:
+            teste_nsswitch: OK
+
+      rescue:
+        - name: Considera NOK para o relatório final
+          delegate_to: localhost
+          ansible.builtin.set_fact:
+            teste_nsswitch: FAIL
+
+    - name: Verifica o daemon do sssd
+      block:
+        - name: Coleta dos facts de serviços
+          ansible.builtin.service_facts:
+
+        - name: Testa se o sssd está no ar e habilitado no boot
+          ansible.builtin.assert:
+            that:
+              - ansible_facts['services']['sssd.service']['state'] == 'running'
+              - ansible_facts['services']['sssd.service']['status'] == 'enabled'
+
+        - name: Considera OK para o relatório final                             
+          delegate_to: localhost
+          ansible.builtin.set_fact:
+            teste_sssd: OK
+
+      rescue:
+        - name: Considera NOK para o relatório final
+          delegate_to: localhost
+          ansible.builtin.set_fact:
+            teste_sssd: FAIL
+
+    - name: Teste de conectividade com LDAP
+      block:
+        - name: Busca o arquivo de cache
+          ansible.builtin.fetch:
+            src: /var/lib/sss/db/cache_{{ dominio }}.ldb
+            dest: ./
+
+        - name: Executa o domando ldbsearch
+          ansible.builtin.shell: ldbsearch -H {{ inventory_hostname }}/var/lib/sss/db/cache_{{ dominio }}.ldb "name={{ usuario_teste_auth }}@{{ dominio }}" dn
+          delegate_to: localhost
+          register: raw_output_ldbsearch
+
+        - name: Alimenta a lista lista_registros_encontrados_ldb com as entradas do cache
+          loop: "{{ raw_output_ldbsearch.stdout_lines | select('search', '^dn:') }}"
+          ansible.builtin.set_fact:
+            lista_registros_encontrados_ldb: "{{ lista_registros_encontrados_ldb + [(item | split())[1]] }}"
+
+        - name: Remove as entradas do cache
+          loop: "{{ lista_registros_encontrados_ldb }}"
+          delegate_to: localhost
+          ansible.builtin.shell: ldbdel -H {{ inventory_hostname }}/var/lib/sss/db/cache_{{ dominio }}.ldb {{ item }}
+
+        - name: Copia o cache de volta para a máquina
+          ansible.builtin.copy:
+            src: "{{ inventory_hostname }}/var/lib/sss/db/cache_{{ dominio }}.ldb"
+            dest: /var/lib/sss/db
+            mode: 0600
+            owner: root
+            group: root
+
+        - name: Reinicia o daemon do sssd
+          ansible.builtin.systemd_service:
+            state: restarted
+            name: sssd
+
+        - name: Garante a existência do pacote sssd-tools
+          ansible.builtin.dnf:
+            name: sssd-tools
+            state: present
+
+        - name: Faz o sssd consultar a exitencia do usuário {{ usuario_teste_auth }}
+          ansible.builtin.shell: sssctl user-checks {{ usuario_teste_auth }}
+          register: raw_output_sssctl_user_check
+
+        - name: Considera OK para o relatório final
+          delegate_to: localhost
+          ansible.builtin.set_fact:
+            teste_ldap: OK
+
+      rescue:
+        - name: Considera NOK para o relatório final
+          delegate_to: localhost
+          ansible.builtin.set_fact:
+            teste_ldap: FAIL
+
+    - name: Resumo do host (status sobre o que foi testado)
+      ansible.builtin.set_fact:
+        status_geral: "{{ inventory_hostname + ',' + teste_nsswitch + ',' + teste_sssd + ',' + teste_ldap + '\n' }}"
+
+- name: Play que gera o relatório
+  hosts: localhost
+  gather_facts: false
+  vars:
+    relatorio: ""
+  tasks:
+    - name: Grava os resultados dos testes do play inicial em uma variável
+      loop: "{{ lista_servers_play_inicial }}"
+      ansible.builtin.set_fact:
+        relatorio: "{{ relatorio + hostvars[item]['status_geral'] }}"
+
+    - name: Gera o relatório
+      ansible.builtin.lineinfile:
+        path: ./relatorio.csv
+        line: "{{ relatorio }}"
+...

@@ -1,0 +1,9 @@
+*** AUTENTICAÇÃO ***
+Situação do nsswitch: OK
+Situação da conectividade com o LDAP: OK
+Situação do daemon do sssd: OK
+
+ *** ASSUNTO X ***
+Situação de A: OK
+Situação de B: FAIL
+

@@ -1,0 +1,52 @@
+---
+- name: RHEL Health Check
+  hosts: clienterhel9.s2linux.local, clienterhel10.s2linux.local
+  gather_facts: false
+  vars:
+    arquivo_relatorio: relatorio_{{ inventory_hostname }}.txt
+
+  tasks:
+    # TESTES DE AUTENTICAÇÃO
+    - name: Verifica uso do sss no /etc/nsswitch.conf
+      ansible.builtin.include_role:
+        name: teste_nsswitch
+
+    - name: Verifica conectividade com LDAP
+      ansible.builtin.include_role:
+        name: teste_ldap
+
+    - name: Verifica daemon do sssd
+      ansible.builtin.include_role:
+        name: teste_sssd
+
+    - name: Resumo dos testes de autenticação
+      ansible.builtin.set_fact:
+        status_geral_auth: |+
+          *** AUTENTICAÇÃO ***
+          Situação do nsswitch: {{ teste_nsswitch }}
+          Situação da conectividade com o LDAP: {{ teste_ldap }}
+          Situação do daemon do sssd: {{ teste_sssd }}
+
+    - name: Resumo dos testes de X
+      # Para cada novo grupo de tasks que adicionarei, uma nova
+      # chamada de set_fact como esta deverá ser criada
+      when: false
+      ansible.builtin.set_fact:
+        status_geral_x: |+
+          *** ASSUNTO X ***
+          Situação de A: {{ teste_a }}
+          Situação de B: {{ teste_b }}
+
+    - name: Insere as informações no relatório
+      ansible.builtin.copy:       
+        dest: /tmp/{{ arquivo_relatorio }}
+        content: >
+          {{ status_geral_auth }}
+        mode: 0644                
+
+    - name: Traz o relatório
+      ansible.builtin.fetch:
+        flat: true
+        src: /tmp/{{ arquivo_relatorio }}
+        dest: ./
+...
