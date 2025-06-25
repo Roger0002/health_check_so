@@ -19,29 +19,30 @@
       ansible.builtin.include_role:
         name: teste_sssd
 
+    - name: Verifica se os repositórios padrão estão ativos
+      ansible.builtin.include_role:                        
+        name: testerepodefaults
+
     - name: Resumo dos testes de autenticação
       ansible.builtin.set_fact:
-        status_geral_auth: |+
+        status_geral_auth: |
           *** AUTENTICAÇÃO ***
           Situação do nsswitch: {{ teste_nsswitch }}
           Situação da conectividade com o LDAP: {{ teste_ldap }}
           Situação do daemon do sssd: {{ teste_sssd }}
 
-    - name: Resumo dos testes de X
-      # Para cada novo grupo de tasks que adicionarei, uma nova
-      # chamada de set_fact como esta deverá ser criada
-      when: false
+    - name: Resumo dos testes de acesso a conteúdo
       ansible.builtin.set_fact:
-        status_geral_x: |+
-          *** ASSUNTO X ***
-          Situação de A: {{ teste_a }}
-          Situação de B: {{ teste_b }}
+        status_geral_acesso_conteudo: |
+          *** ACESSO A CONTEÚDO ***
+          Situação dos repositórios padrão: {{ teste_repodefaults }}
 
     - name: Insere as informações no relatório
       ansible.builtin.copy:       
         dest: /tmp/{{ arquivo_relatorio }}
-        content: >
+        content: |
           {{ status_geral_auth }}
+          {{ status_geral_acesso_conteudo }}
         mode: 0644                
 
     - name: Traz o relatório

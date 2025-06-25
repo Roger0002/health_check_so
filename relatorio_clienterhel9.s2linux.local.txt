@@ -1,0 +1,7 @@
+*** AUTENTICAÇÃO ***
+Situação do nsswitch: OK
+Situação da conectividade com o LDAP: OK
+Situação do daemon do sssd: OK
+
+*** ACESSO A CONTEÚDO ***
+Situação dos repositórios padrão: OK
