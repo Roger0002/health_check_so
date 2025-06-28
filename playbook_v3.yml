@@ -1,4 +1,8 @@
 ---
+
+# Playbook de Health Check de SO
+# Desenvolvido por Roger Príncipe (rprincip@redhat.com)
+
 - name: RHEL Health Check
   hosts: clienterhel9.s2linux.local, clienterhel10.s2linux.local
   gather_facts: false
@@ -70,6 +74,7 @@
         content: |
           {{ status_geral_auth }}
           {{ status_geral_acesso_conteudo }}
+          {{ status_geral_logging }}
         mode: 0644                
 
     - name: Traz o relatório
