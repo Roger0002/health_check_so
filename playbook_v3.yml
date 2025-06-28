@@ -19,9 +19,27 @@
       ansible.builtin.include_role:
         name: teste_sssd
 
+    # TESTES DE ACESSO A CONTEÚDO
     - name: Verifica se os repositórios padrão estão ativos
       ansible.builtin.include_role:                        
         name: testerepodefaults
+
+    - name: Verifica se é possível baixar pacotes
+      ansible.builtin.include_role:
+        name: testedownloadpackages
+
+    - name: Verifica se a máquina está registrada no insights
+      ansible.builtin.include_role:
+        name: testeregistroinsights
+
+    # TESTES DE LOGGING
+    - name: Verifica se o daemon do rsyslog está no ar e habilitado para inicializar no boot
+      ansible.builtin.include_role:                                                         
+        name: testersyslog
+
+     name: Verifica se o rsyslog está garantindo a escrita nos arquivos de log
+      ansible.builtin.include_role:                   
+        name: testeescritalogs
 
     - name: Resumo dos testes de autenticação
       ansible.builtin.set_fact:
@@ -36,6 +54,15 @@
         status_geral_acesso_conteudo: |
           *** ACESSO A CONTEÚDO ***
           Situação dos repositórios padrão: {{ teste_repodefaults }}
+          Situação de download de pacotes: {{ teste_downloadpackages }}
+          Situação do registro no insights: {{ teste_registroinsights }}
+
+    - name: Resumo dos testes de logging
+      ansible.builtin.set_fact:
+        status_geral_logging: |
+          *** LOGGING ***
+          Situação do daemon do rsyslog: {{ teste_rsyslog }}
+          Situação de escrita nos logs: {{ teste_escritalogs }}
 
     - name: Insere as informações no relatório
       ansible.builtin.copy:       

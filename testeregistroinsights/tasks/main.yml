@@ -1,0 +1,24 @@
+---
+- name: Bloco do teste de registro no insights
+  block:
+    - name: Lê o arquivo redhat.repo
+      ansible.builtin.slurp:
+        src: /etc/yum.repos.d/redhat.repo
+      register: redhatrepo_output
+
+    - name: Verifica existência dos arquivos
+      loop:
+        - /etc/insights-client/.registered
+        - /var/lib/insights/host-details.json
+      ansible.builtin.include_tasks:
+        file: existencia_arquivos.yml
+
+    - name: Considera OK para o relatório final
+      ansible.builtin.set_fact:
+        teste_registroinsights: OK
+ 
+  rescue:
+    - name: Considera NOK para o relatório final
+      ansible.builtin.set_fact:
+        teste_registroinsights: FAIL
+...

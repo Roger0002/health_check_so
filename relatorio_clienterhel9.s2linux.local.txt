@@ -5,3 +5,5 @@ Situação do daemon do sssd: OK
 
 *** ACESSO A CONTEÚDO ***
 Situação dos repositórios padrão: OK
+Situação de download de pacotes: OK
+Situação do registro no insights: FAIL
