@@ -1,3 +1,46 @@
-#SPDX-License-Identifier: MIT-0
 ---
-# tasks file for testeescritalogs
+- name: Bloco do teste de escrita em log
+  block:
+    - name: Gera uma variável cujo valor é uma string aleatória
+      ansible.builtin.set_fact:
+        string_teste: "{{ lookup('community.general.random_string', special=false) }}"
+
+    - name: Envia uma mensagem de erro para a facility {{ item }}
+      community.general.syslogger:
+        msg: Teste de escrita realizado pelo Ansible, por favor ignore. Codigo {{ string_teste }}
+        priority: err
+        facility: kern
+
+    - name: Busca o arquivo de log messages
+      ansible.builtin.fetch:
+        src: /var/log/messages
+        validate_checksum: false
+        dest: ./
+
+    - name: Lê o arquivo de log
+      ansible.builtin.slurp:
+        src: "{{ inventory_hostname }}/var/log/messages"
+      delegate_to: localhost
+      register: conteudo_messages
+
+    - name: Assegura que o registro de teste foi escrito no log
+      ansible.builtin.assert:
+        that: conteudo_messages['content'] | b64decode | regex_search('Codigo ' + string_teste, multiline=true) != None
+
+    - name: Considera OK para o relatório final
+      ansible.builtin.set_fact:
+        teste_escritalogs: OK
+
+  rescue:
+    - name: Considera NOK para o relatório final
+      ansible.builtin.set_fact:                
+        teste_escritalogs: FAIL
+
+  always:
+    - name: Remove o arquivo messages local (copiado) # Dispensável quando for disparado de um EE
+      delegate_to: localhost
+      failed_when: false
+      ansible.builtin.file:
+        path: "{{ inventory_hostname }}"
+        state: absent
+...

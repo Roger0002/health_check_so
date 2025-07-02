@@ -7,3 +7,11 @@ Situação do daemon do sssd: OK
 Situação dos repositórios padrão: OK
 Situação de download de pacotes: OK
 Situação do registro no insights: OK
+
+*** LOGGING ***
+Situação do daemon do rsyslog: OK
+Situação de escrita nos logs: OK
+
+*** SEGURANÇA ***
+Situação de bugs: OK
+Situação de falha de segurança: OK

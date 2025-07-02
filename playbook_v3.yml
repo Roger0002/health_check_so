@@ -41,9 +41,23 @@
       ansible.builtin.include_role:                                                         
         name: testersyslog
 
-     name: Verifica se o rsyslog está garantindo a escrita nos arquivos de log
+    - name: Verifica se o rsyslog está garantindo a escrita nos arquivos de log
       ansible.builtin.include_role:                   
         name: testeescritalogs
+
+    # SEGURANÇA
+    - name: Verifica a presença de bugs
+      ansible.builtin.include_role:
+        name: testebugs
+
+    - name: Verifica a presença de falhas de seguranca
+      ansible.builtin.include_role:
+        name: testefalhaseguranca
+
+    - name: Verifica permissividade de execução no /tmp
+      when: false
+      ansible.builtin.include_role:
+        name: testetmpexec
 
     - name: Resumo dos testes de autenticação
       ansible.builtin.set_fact:
@@ -68,14 +82,22 @@
           Situação do daemon do rsyslog: {{ teste_rsyslog }}
           Situação de escrita nos logs: {{ teste_escritalogs }}
 
+    - name: Resumo dos testes de segurança
+      ansible.builtin.set_fact:
+        status_geral_seguranca: |
+          *** SEGURANÇA ***
+          Situação de bugs: {{ teste_bugs }}
+          Situação de falha de segurança: {{ teste_falhaseguranca }}
+
     - name: Insere as informações no relatório
       ansible.builtin.copy:       
+        mode: 0644
         dest: /tmp/{{ arquivo_relatorio }}
         content: |
           {{ status_geral_auth }}
           {{ status_geral_acesso_conteudo }}
           {{ status_geral_logging }}
-        mode: 0644                
+          {{ status_geral_seguranca }}
 
     - name: Traz o relatório
       ansible.builtin.fetch:

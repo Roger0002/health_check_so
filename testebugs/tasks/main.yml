@@ -1,0 +1,20 @@
+---
+- name: Bloco do teste de bugs presentes
+  block:
+    - name: Listar pacotes disponíveis para atualização
+      ansible.builtin.shell: dnf updateinfo list updates bugfix
+      register: bugfix_available_output
+
+    - name: Testa se há errata de bugfix disponíveis para aplicar
+      ansible.builtin.assert:
+        that: bugfix_available_output.stdout_lines | select('match', '.*?bugfix.*?') | length == 0
+
+    - name: Considera OK para o relatório final
+      ansible.builtin.set_fact:
+        teste_bugs: OK
+ 
+  rescue:
+    - name: Considera NOK para o relatório final
+      ansible.builtin.set_fact:
+        teste_bugs: FAIL
+
