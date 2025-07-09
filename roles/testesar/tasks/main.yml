@@ -8,7 +8,7 @@
       ansible.builtin.assert:
         that: ansible_facts['packages']['sysstat'] is defined
 
-    - name: Coleta dos facts de serviços
+    - name: Coleta dos facts do timer sysstat-collect
       ansible.builtin.systemd_service:
         name: sysstat-collect.timer
       register: output_sysstat_timer
