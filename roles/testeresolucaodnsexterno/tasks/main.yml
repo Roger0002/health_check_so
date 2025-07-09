@@ -1,0 +1,21 @@
+---
+- name: Bloco do teste de resolução externa
+  block:
+    - name: valida presença do pacote bind-utils
+      ansible.builtin.dnf:
+        name: bind-utils
+        state: present
+
+    - name: Executa o dig
+      loop: "{{ ansible_facts['dns']['nameservers'] }}"
+      ansible.builtin.command: host {{ host_teste_dns }} {{ item }}
+
+    - name: Considera OK para o relatório final
+      ansible.builtin.set_fact:
+        teste_resolucaodnsexterno: OK
+ 
+  rescue:
+    - name: Considera NOK para o relatório final
+      ansible.builtin.set_fact:
+        teste_resolucaodnsexterno: FAIL
+

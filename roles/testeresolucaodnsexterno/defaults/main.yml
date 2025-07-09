@@ -1,0 +1,2 @@
+---
+host_teste_dns: "{{ inventory_hostname }}"

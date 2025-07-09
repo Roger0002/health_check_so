@@ -1,6 +1,0 @@
----
-- hosts: clienterhel9.s2linux.local, clienterhel10.s2linux.local, deva.s2linux.local
-  gather_facts: false
-  roles:
-    - testebugs
-...

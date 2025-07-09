@@ -4,102 +4,182 @@
 # Desenvolvido por Roger Príncipe (rprincip@redhat.com)
 
 - name: RHEL Health Check
-  hosts: clienterhel9.s2linux.local, clienterhel10.s2linux.local
-  gather_facts: false
+  hosts: clienterhel10.s2linux.local, clienterhel9.s2linux.local
+  gather_facts: true
   vars:
+    ansible_password: 12345678
     arquivo_relatorio: relatorio_{{ inventory_hostname }}.txt
 
   tasks:
     # TESTES DE AUTENTICAÇÃO
     - name: Verifica uso do sss no /etc/nsswitch.conf
-      ansible.builtin.include_role:
+      tags:
+        - authenticacao-geral
+      ansible.builtin.import_role:
         name: teste_nsswitch
 
     - name: Verifica conectividade com LDAP
-      ansible.builtin.include_role:
+      tags:
+        - authenticacao-geral
+      ansible.builtin.import_role:
         name: teste_ldap
 
     - name: Verifica daemon do sssd
-      ansible.builtin.include_role:
+      tags:          
+        - authenticacao-geral
+      ansible.builtin.import_role:
         name: teste_sssd
 
     # TESTES DE ACESSO A CONTEÚDO
-    - name: Verifica se os repositórios padrão estão ativos
-      ansible.builtin.include_role:                        
+    - name: Verifica se os repositórios padrão estão ativos\
+      tags:          
+        - acesso-conteudo-geral
+      ansible.builtin.import_role:
         name: testerepodefaults
 
     - name: Verifica se é possível baixar pacotes
-      ansible.builtin.include_role:
+      tags:
+        - acesso-conteudo-geral
+      ansible.builtin.import_role:
         name: testedownloadpackages
 
     - name: Verifica se a máquina está registrada no insights
-      ansible.builtin.include_role:
+      tags:
+        - acesso-conteudo-geral
+      ansible.builtin.import_role:
         name: testeregistroinsights
 
     # TESTES DE LOGGING
     - name: Verifica se o daemon do rsyslog está no ar e habilitado para inicializar no boot
-      ansible.builtin.include_role:                                                         
+      tags:
+        - logging-geral
+      ansible.builtin.import_role:                                                         
         name: testersyslog
 
     - name: Verifica se o rsyslog está garantindo a escrita nos arquivos de log
-      ansible.builtin.include_role:                   
+      tags:
+        - logging-geral
+      ansible.builtin.import_role:
         name: testeescritalogs
 
-    # SEGURANÇA
+    # TESTES DE SEGURANÇA
     - name: Verifica a presença de bugs
-      ansible.builtin.include_role:
+      tags:
+        - seguranca-geral
+      ansible.builtin.import_role:
         name: testebugs
 
     - name: Verifica a presença de falhas de seguranca
-      ansible.builtin.include_role:
+      tags:
+        - seguranca-geral
+      ansible.builtin.import_role:
         name: testefalhaseguranca
 
-    - name: Verifica permissividade de execução no /tmp
-      when: false
-      ansible.builtin.include_role:
-        name: testetmpexec
+    - name: Verifica o audit
+      tags:
+        - seguranca-geral
+      ansible.builtin.import_role:
+        name: testeaudit
 
+    - name: Verifica o SElinux
+      tags:
+        - seguranca-geral
+      ansible.builtin.import_role:
+        name: testeselinux
+
+    - name: Verifica se há violações do SElinux
+      tags:
+        - seguranca-geral
+      ansible.builtin.import_role:
+        name: testeselinuxviolations
+
+    - name: Verifica o firewalld
+      tags:
+        - seguranca-geral
+      ansible.builtin.import_role:
+        name: testefirewalld
+
+    # TESTES DE REDE
+    - name: Verifica a resolução de DNS (externa)
+      tags:
+        - rede-geral
+      ansible.builtin.import_role:
+        name: testeresolucaodnsexterno
+
+    - name: Verifica hostname no /etc/hosts
+      tags:                       
+        - rede-geral              
+      ansible.builtin.import_role:
+        name: testeetchosts
+
+    # ÍNICIO DO AGRUPAMENTO DAS INFORMAÇÕES PARA EXIBIÇÃO
     - name: Resumo dos testes de autenticação
+      tags:
+        - authenticacao-geral
       ansible.builtin.set_fact:
         status_geral_auth: |
           *** AUTENTICAÇÃO ***
-          Situação do nsswitch: {{ teste_nsswitch }}
-          Situação da conectividade com o LDAP: {{ teste_ldap }}
-          Situação do daemon do sssd: {{ teste_sssd }}
+          Situação do nsswitch: {{ teste_nsswitch | default("") }}
+          Situação da conectividade com o LDAP: {{ teste_ldap | default("") }}
+          Situação do daemon do sssd: {{ teste_sssd | default("") }}
 
     - name: Resumo dos testes de acesso a conteúdo
+      tags:
+        - acesso-conteudo-geral
       ansible.builtin.set_fact:
         status_geral_acesso_conteudo: |
           *** ACESSO A CONTEÚDO ***
-          Situação dos repositórios padrão: {{ teste_repodefaults }}
-          Situação de download de pacotes: {{ teste_downloadpackages }}
-          Situação do registro no insights: {{ teste_registroinsights }}
+          Situação dos repositórios padrão: {{ teste_repodefaults | default("") }}
+          Situação de download de pacotes: {{ teste_downloadpackages | default("") }}
+          Situação do registro no insights: {{ teste_registroinsights | default("") }}
 
     - name: Resumo dos testes de logging
+      tags:
+        - logging-geral
       ansible.builtin.set_fact:
         status_geral_logging: |
           *** LOGGING ***
-          Situação do daemon do rsyslog: {{ teste_rsyslog }}
-          Situação de escrita nos logs: {{ teste_escritalogs }}
+          Situação do daemon do rsyslog: {{ teste_rsyslog | default("") }}
+          Situação de escrita nos logs: {{ teste_escritalogs | default("") }}
 
     - name: Resumo dos testes de segurança
+      tags:
+        - seguranca-geral
       ansible.builtin.set_fact:
         status_geral_seguranca: |
           *** SEGURANÇA ***
-          Situação de bugs: {{ teste_bugs }}
-          Situação de falha de segurança: {{ teste_falhaseguranca }}
+          Situação de bugs: {{ teste_bugs | default("") }}
+          Situação de falha de segurança: {{ teste_falhaseguranca | default("") }}
+          Situação do audit: {{ teste_audit | default("") }}
+          Situação do SElinux: {{ teste_selinux | default("") }}
+          Situação das violações de SElinux: {{ teste_selinuxviolations | default("") }}
+          Situação do firewalld: {{ teste_firewalld | default("") }}
+
+    - name: Resumo dos testes de rede
+      tags:
+        - rede-geral
+      ansible.builtin.set_fact:
+        status_geral_rede: |
+          *** REDE ***
+          Situação da resolução externa de DNS: {{ teste_resolucaodnsexterno | default("") }}
+          Situação do hostname em /etc/hosts: {{ teste_etchosts | default("") }}
 
     - name: Insere as informações no relatório
+      tags:
+        - always
       ansible.builtin.copy:       
         mode: 0644
         dest: /tmp/{{ arquivo_relatorio }}
         content: |
-          {{ status_geral_auth }}
-          {{ status_geral_acesso_conteudo }}
-          {{ status_geral_logging }}
-          {{ status_geral_seguranca }}
+          {{ status_geral_auth | default("") }}
+          {{ status_geral_acesso_conteudo | default("") }}
+          {{ status_geral_logging | default("") }}
+          {{ status_geral_seguranca | default("") }}
+          {{ status_geral_rede | default("") }}
 
     - name: Traz o relatório
+      tags:
+        - always
       ansible.builtin.fetch:
         flat: true
         src: /tmp/{{ arquivo_relatorio }}

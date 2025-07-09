@@ -1,0 +1,17 @@
+---
+- name: Bloco do teste das violações de selinux
+  block:
+    - name: Executa o ausearch
+      failed_when: ausearch_resultado.rc == 0
+      ansible.builtin.shell: ausearch -m AVC,USER_AVC -ts boot
+      register: ausearch_resultado
+
+    - name: Considera OK para o relatório final
+      ansible.builtin.set_fact:
+        teste_selinuxviolations: OK
+         
+  rescue:
+    - name: Considera NOK para o relatório final
+      ansible.builtin.set_fact:
+        teste_selinuxviolations: FAIL
+

@@ -1,0 +1,32 @@
+---
+- name: Bloco do teste do /etc/hosts
+  block:
+    - name: Obtem o conteúdo do /etc/hosts
+      ansible.builtin.slurp:
+        src: /etc/hosts
+      register: output_etchosts
+
+    - name: Cria a lista das ocorrências encontradas em /etc/hosts com o hostname da máquina
+      vars:
+        regex: "{{ '[^#][0-9]{1,3}.[0-9]{1,3}.[0-9]{1,3}.[0-9]{1,3}\\s*' + inventory_hostname + '\\s*' + inventory_hostname_short }}"
+      ansible.builtin.set_fact:
+        lista_cocrrencias_encontradas: "{{ output_etchosts['content'] | b64decode | split('\n') | select('match', regex) }}"
+       
+    - name: Assegura que existem uma ou mais ocorrências
+      ansible.builtin.assert:
+        that: lista_cocrrencias_encontradas | length > 0
+
+    - name: Assegura que não tem mais do que uma ocorrência (quando ambiente não possui particularidade que permita mais)
+      when: pode2 == 'NAO'
+      ansible.builtin.assert:
+        that: lista_cocrrencias_encontradas | length == 1
+
+    - name: Considera OK para o relatório final
+      ansible.builtin.set_fact:
+        teste_etchosts: OK
+
+  rescue:
+    - name: Considera NOK para o relatório final
+      ansible.builtin.set_fact:
+        teste_etchosts: FAIL
+

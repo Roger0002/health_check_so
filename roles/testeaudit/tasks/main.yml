@@ -1,0 +1,20 @@
+---
+- name: Bloco do teste do daemon do audit no ar e habilitado no boot
+  block:
+    - name: Coleta os facts sobre os serviços
+      ansible.builtin.service_facts:
+
+    - name: Testa se o auditd está no ar e habilitado no boot
+      ansible.builtin.assert:
+        that:
+          - ansible_facts['services']['auditd.service']['state'] == 'running'
+          - ansible_facts['services']['auditd.service']['status'] == 'enabled'
+
+    - name: Considera OK para o relatório final
+      ansible.builtin.set_fact:
+        teste_audit: OK
+
+  rescue:
+    - name: Considera NOK para o relatório final
+      ansible.builtin.set_fact:
+        teste_audit: FAIL

@@ -13,5 +13,13 @@ Situação do daemon do rsyslog: OK
 Situação de escrita nos logs: OK
 
 *** SEGURANÇA ***
-Situação de bugs: OK
-Situação de falha de segurança: OK
+Situação de bugs: FAIL
+Situação de falha de segurança: FAIL
+Situação do audit: OK
+Situação do SElinux: OK
+Situação das violações de SElinux: OK
+Situação do firewalld: OK
+
+*** REDE ***
+Situação da resolução externa de DNS: OK
+Situação do hostname em /etc/hosts: OK
