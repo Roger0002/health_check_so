@@ -1,0 +1,38 @@
+---
+- name: Bloco do teste do sar
+  block:
+    - name: Coleta os facts dos pacotes RPM
+      ansible.builtin.package_facts:
+
+    - name: Assegura que o pacote sysstat está instalado
+      ansible.builtin.assert:
+        that: ansible_facts['packages']['sysstat'] is defined
+
+    - name: Coleta dos facts de serviços
+      ansible.builtin.systemd_service:
+        name: sysstat-collect.timer
+      register: output_sysstat_timer
+
+    - name: Assegura que a coleta do sysstat (sar) está ativa
+      ansible.builtin.assert:
+        that:
+          - output_sysstat_timer['status']['ActiveState'] == 'active'
+          - output_sysstat_timer['status']['UnitFileState']  == 'enabled'
+
+    - name: Define variáveis que armazenam as datas da próxima e última coleta
+      ansible.builtin.set_fact:
+        proxima_coleta: "{{ output_sysstat_timer['status']['NextElapseUSecRealtime'] | regex_replace(regex_desloc_fuso, '') | replace('Next elapse: ', '') }}"
+        ultima_coleta: "{{ output_sysstat_timer['status']['LastTriggerUSec'] | regex_replace(regex_desloc_fuso, '') }}"
+
+    - name: Assegura que intervalo de coleta é inferior a 3 minutos
+      ansible.builtin.assert:
+        that: "(proxima_coleta | to_datetime(formato_data_systemd) - ultima_coleta | to_datetime(formato_data_systemd)).seconds | int <= 180"
+
+    - name: Considera OK para o relatório final
+      ansible.builtin.set_fact:
+        teste_sar: OK
+ 
+  rescue:
+    - name: Considera NOK para o relatório final
+      ansible.builtin.set_fact:
+        teste_sar: FAIL
