@@ -26,4 +26,4 @@ Situação do hostname em /etc/hosts: OK
 
 *** MISCELANEA ***
 Situação da coleta de consumo de recursos: OK
-Situação da integridade da base RPM: 
+Situação da integridade da base RPM: OK

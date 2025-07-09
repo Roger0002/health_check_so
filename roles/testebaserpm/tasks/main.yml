@@ -2,7 +2,7 @@
 - name: Bloco do teste de integridade da base RPM
   block:
     - name: Testa a integridade da base RPM
-      ansible.builtin.shell: echo "em breve"
+      ansible.builtin.command: rpm --verifydb
 
     - name: Considera OK para o relatório final
       ansible.builtin.set_fact:
