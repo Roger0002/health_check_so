@@ -25,14 +25,14 @@
         name: teste_ldap
 
     - name: Verifica daemon do sssd
-      tags:          
+      tags:
         - authenticacao-geral
       ansible.builtin.import_role:
         name: teste_sssd
 
     # TESTES DE ACESSO A CONTEÚDO
     - name: Verifica se os repositórios padrão estão ativos\
-      tags:          
+      tags:
         - acesso-conteudo-geral
       ansible.builtin.import_role:
         name: testerepodefaults
@@ -53,7 +53,7 @@
     - name: Verifica se o daemon do rsyslog está no ar e habilitado para inicializar no boot
       tags:
         - logging-geral
-      ansible.builtin.import_role:                                                         
+      ansible.builtin.import_role:
         name: testersyslog
 
     - name: Verifica se o rsyslog está garantindo a escrita nos arquivos de log
@@ -117,7 +117,7 @@
         - rede-geral
       ansible.builtin.import_role:
         name: testetxrx
-    
+
     # TESTES - MISCELÂNEA
     - name: Verifica a coleta do sysstat
       tags:
@@ -193,7 +193,6 @@
           *** MISCELANEA ***
           Situação da coleta de consumo de recursos: {{ teste_sar | default("") }}
           Situação da integridade da base RPM: {{ teste_baserpm | default("") }}
-
 
     - name: Insere as informações no relatório
       tags:

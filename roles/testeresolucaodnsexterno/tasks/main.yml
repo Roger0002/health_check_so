@@ -1,7 +1,7 @@
 ---
 - name: Bloco do teste de resolução externa
   block:
-    - name: valida presença do pacote bind-utils
+    - name: Valida presença do pacote bind-utils
       ansible.builtin.dnf:
         name: bind-utils
         state: present

@@ -22,7 +22,4 @@
     - name: Considera NOK para o relatório final
       ansible.builtin.set_fact:
         teste_txrx: FAIL
-
-
-#/sys/class/net/enp1s0/statistics/{rx,tx}_errors
-#/sys/class/net/enp1s0/statistics/rx_crc_errors
+...

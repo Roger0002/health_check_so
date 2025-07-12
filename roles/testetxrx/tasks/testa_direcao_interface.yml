@@ -1,10 +1,10 @@
 ---
-- name: Lê o arquivo {{ inner_item }}_errors em busca de erros
+- name: Lê o arquivo, em busca de erros, o arquivo {{ inner_item }}
   ansible.builtin.slurp:
     src: /sys/class/net/{{ item }}/statistics/{{ inner_item }}_errors
   register: saida_leitura
 
-- name: Determina a quantidade de erros em {{ inner_item }}_errors
+- name: Determina a quantidade de erros em {{ inner_item }}
   ansible.builtin.set_fact:
     q_erros: "{{ saida_leitura['content'] | b64decode }}"
 
@@ -15,7 +15,7 @@
       ansible.builtin.wait_for:
         timeout: 30
 
-    - name: Lê o arquivo {{ inner_item }}_errors novamente
+    - name: Lê novamente o arquivo de erros em {{ inner_item }}
       ansible.builtin.slurp:
         src: /sys/class/net/{{ item }}/statistics/{{ inner_item }}_errors
       register: saida_nova_verificacao
