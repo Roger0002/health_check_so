@@ -1,0 +1,10 @@
+---
+- name: Itera na dupla de arquivos onde os erros são registrados (envio e recebimento)
+  loop:
+    - rx
+    - tx
+  loop_control:
+    loop_var: inner_item
+  ansible.builtin.include_tasks:
+    file: testa_direcao_interface.yml
+...

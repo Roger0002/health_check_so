@@ -1,0 +1,28 @@
+---
+- name: Bloco do teste de incremento nos pacotes com erro
+  block:
+    - name: Alimenta a lista de interfaces a serem verificadas
+      loop: "{{ ansible_facts['interfaces'] }}"
+      ansible.builtin.set_fact:
+        lista_interfaces: "{{ lista_interfaces + [item] }}"
+      when:
+        - ansible_facts[item]['active']
+        - ansible_facts[item]['type'] == 'ether'
+
+    - name: Itera na lista de interfaces, testando-as quanto a presença de pacotes com erro
+      loop: "{{ lista_interfaces }}"
+      ansible.builtin.include_tasks:
+        file: tasks_verifica_erros_interfaces.yml
+
+    - name: Considera OK para o relatório final
+      ansible.builtin.set_fact:
+        teste_txrx: OK
+
+  rescue:
+    - name: Considera NOK para o relatório final
+      ansible.builtin.set_fact:
+        teste_txrx: FAIL
+
+
+#/sys/class/net/enp1s0/statistics/{rx,tx}_errors
+#/sys/class/net/enp1s0/statistics/rx_crc_errors

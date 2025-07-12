@@ -111,6 +111,12 @@
         - rede-geral
       ansible.builtin.import_role:
         name: testeetchosts
+
+    - name: Verifica incremento agressivo de pacotes com erro
+      tags:
+        - rede-geral
+      ansible.builtin.import_role:
+        name: testetxrx
     
     # TESTES - MISCELÂNEA
     - name: Verifica a coleta do sysstat
@@ -177,6 +183,7 @@
           *** REDE ***
           Situação da resolução externa de DNS: {{ teste_resolucaodnsexterno | default("") }}
           Situação do hostname em /etc/hosts: {{ teste_etchosts | default("") }}
+          Situação do incremento de pacotes com erro: {{ teste_txrx | default("") }}
 
     - name: Resumo dos testes da seção de miscelanea
       tags:

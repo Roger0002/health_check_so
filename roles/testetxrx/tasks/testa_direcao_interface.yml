@@ -1,0 +1,27 @@
+---
+- name: Lê o arquivo {{ inner_item }}_errors em busca de erros
+  ansible.builtin.slurp:
+    src: /sys/class/net/{{ item }}/statistics/{{ inner_item }}_errors
+  register: saida_leitura
+
+- name: Determina a quantidade de erros em {{ inner_item }}_errors
+  ansible.builtin.set_fact:
+    q_erros: "{{ saida_leitura['content'] | b64decode }}"
+
+- name: Caso haja erros, aguarda para determinar se erros estão incrementando
+  when: q_erros | int > 0
+  block:
+    - name: Espera 30 segundos para coletar o conteúdo do arquivo de novo
+      ansible.builtin.wait_for:
+        timeout: 30
+
+    - name: Lê o arquivo {{ inner_item }}_errors novamente
+      ansible.builtin.slurp:
+        src: /sys/class/net/{{ item }}/statistics/{{ inner_item }}_errors
+      register: saida_nova_verificacao
+
+    - name: Assegura que não há incremento de erros
+      ansible.builtin.assert:
+        that: saida_nova_verificacao['content'] | b64decode | int == q_erros | int
+        fail_msg: Foi detectado incremento de erros no arquivo /sys/class/net/{{ item }}/statistics/{{ inner_item }}_errors
+...
