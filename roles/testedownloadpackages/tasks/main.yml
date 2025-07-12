@@ -1,7 +1,6 @@
 ---
 - name: Testa se é possível realizar o download de pacotes
   block:
-
     - name: Assegura que o yum-utils esteja instalado
       ansible.builtin.dnf:
         name: yum-utils
@@ -9,7 +8,8 @@
         validate_certs: false
 
     - name: Baixa um pacote para teste
-      ansible.builtin.shell: yumdownloader --downloaddir /tmp httpd
+      ansible.builtin.command: yumdownloader --downloaddir /tmp httpd
+      changed_when: false
 
     - name: Considera OK para o relatório final
       ansible.builtin.set_fact:
@@ -19,5 +19,4 @@
     - name: Considera NOK para o relatório final
       ansible.builtin.set_fact:
         teste_downloadpackages: FAIL
-
-
+...
