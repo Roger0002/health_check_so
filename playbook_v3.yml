@@ -118,6 +118,12 @@
       ansible.builtin.import_role:
         name: testetxrx
 
+    - name: Verifica sincronismo com fontes NTP
+      tags:
+        - rede-geral
+      ansible.builtin.import_role:
+        name: testentp
+
     # TESTES - MISCELÂNEA
     - name: Verifica a coleta do sysstat
       tags:
@@ -184,6 +190,7 @@
           Situação da resolução externa de DNS: {{ teste_resolucaodnsexterno | default("") }}
           Situação do hostname em /etc/hosts: {{ teste_etchosts | default("") }}
           Situação do incremento de pacotes com erro: {{ teste_txrx | default("") }}
+          Situação do sincronismo com fontes NTP: {{ teste_ntp | default("") }}
 
     - name: Resumo dos testes da seção de miscelanea
       tags:

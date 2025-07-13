@@ -1,0 +1,44 @@
+---
+- name: Bloco do NTP
+  block:
+    - name: Coleta os facts de serviços
+      ansible.builtin.service_facts:
+
+    - name: Testa se o daemon do chronyd está no ar e habilitado no boot
+      ansible.builtin.assert:
+        that:
+          - ansible_facts['services']['chronyd.service']['state'] == "running"
+          - ansible_facts['services']['chronyd.service']['status'] == "enabled"
+
+    - name: Executa a listagem de fontes
+      ansible.builtin.command: chronyc -n sources
+      register: chronyc_sources_output
+
+    - name: Testa se as fontes possuem -, + ou *
+      loop: "{{ chronyc_sources_output.stdout_lines | select('search', regex_pega_ip) }}"
+      ansible.builtin.assert:
+        that: item is match('^.[-+*].*')
+
+    - name: Testa se pelo menos uma possui um *
+      ansible.builtin.assert:
+        that: chronyc_sources_output.stdout_lines | select('search', regex_pega_ip) | select('search', regex_pega_ast2) | length > 0
+
+    - name: Constroi a lista de fontes a serem consultadas
+      loop: "{{ chronyc_sources_output.stdout_lines }}"
+      ansible.builtin.set_fact:
+        lista_fontes: "{{ lista_fontes + [item | regex_search(regex_pega_ip)] }}"
+      when: item | regex_search(regex_pega_ip) | type_debug == 'str'
+
+    - name: Testa as fontes
+      loop: "{{ lista_fontes }}"
+      ansible.builtin.command: chronyd -Q "server {{ item }} iburst"
+
+    - name: Considera OK para o relatório final
+      ansible.builtin.set_fact:
+        teste_ntp: OK
+
+  rescue:
+    - name: Considera NOK para o relatório final
+      ansible.builtin.set_fact:
+        teste_ntp: FAIL
+...

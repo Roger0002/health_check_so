@@ -17,13 +17,14 @@ Situação de bugs: FAIL
 Situação de falha de segurança: FAIL
 Situação do audit: OK
 Situação do SElinux: OK
-Situação das violações de SElinux: FAIL
+Situação das violações de SElinux: OK
 Situação do firewalld: OK
 
 *** REDE ***
 Situação da resolução externa de DNS: OK
 Situação do hostname em /etc/hosts: OK
 Situação do incremento de pacotes com erro: OK
+Situação do sincronismo com fontes NTP: OK
 
 *** MISCELANEA ***
 Situação da coleta de consumo de recursos: OK
