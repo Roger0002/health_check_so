@@ -1,0 +1,16 @@
+---
+- name: Bloco do teste de integridade dos metadados dos VGs
+  block:
+    - name: Testa a integridade de todos os VGs da máquina
+      loop: "{{ ansible_facts['lvm']['vgs'].keys() }}"
+      ansible.builtin.command: vgck {{ item }}
+
+    - name: Considera OK para o relatório final
+      ansible.builtin.set_fact:
+        teste_metadados: OK
+
+  rescue:
+    - name: Considera NOK para o relatório final
+      ansible.builtin.set_fact:
+        teste_metadados: FAIL
+...

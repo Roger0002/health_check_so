@@ -124,6 +124,18 @@
       ansible.builtin.import_role:
         name: testentp
 
+    - name: Verifica os metadados dos VGs
+      tags:
+        - lvm-geral
+      ansible.builtin.import_role:
+        name: testemetadados
+
+    - name: Verifica de erro no acesso aos PVs
+      tags:
+        - lvm-geral
+      ansible.builtin.import_role:
+        name: testeerroacessopvs
+
     # TESTES - MISCELÂNEA
     - name: Verifica a coleta do sysstat
       tags:
@@ -192,6 +204,15 @@
           Situação do incremento de pacotes com erro: {{ teste_txrx | default("") }}
           Situação do sincronismo com fontes NTP: {{ teste_ntp | default("") }}
 
+    - name: Resumo dos testes de LVM
+      tags:
+        - lvm-geral
+      ansible.builtin.set_fact:
+        status_geral_lvm: |
+          *** LVM ***
+          Situação dos metadados dos VGs: {{ teste_metadados | default("") }}
+          Situação do acesso aos PVs: {{ teste_erroacessopvs | default("") }}
+
     - name: Resumo dos testes da seção de miscelanea
       tags:
         - miscelanea-geral
@@ -213,6 +234,7 @@
           {{ status_geral_logging | default("") }}
           {{ status_geral_seguranca | default("") }}
           {{ status_geral_rede | default("") }}
+          {{ status_geral_lvm | default("") }}
           {{ status_geral_miscelanea | default("") }}
 
     - name: Traz o relatório
