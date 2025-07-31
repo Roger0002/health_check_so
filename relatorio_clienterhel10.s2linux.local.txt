@@ -1,34 +1,11 @@
-*** AUTENTICAÇÃO ***
-Situação do nsswitch: OK
-Situação da conectividade com o LDAP: OK
-Situação do daemon do sssd: OK
 
-*** ACESSO A CONTEÚDO ***
-Situação dos repositórios padrão: OK
-Situação de download de pacotes: OK
-Situação do registro no insights: OK
 
-*** LOGGING ***
-Situação do daemon do rsyslog: OK
-Situação de escrita nos logs: OK
 
-*** SEGURANÇA ***
-Situação de bugs: OK
-Situação de falha de segurança: OK
-Situação do audit: OK
-Situação do SElinux: OK
-Situação das violações de SElinux: OK
-Situação do firewalld: OK
 
-*** REDE ***
-Situação da resolução externa de DNS: OK
-Situação do hostname em /etc/hosts: OK
-Situação do incremento de pacotes com erro: OK
-Situação do sincronismo com fontes NTP: OK
 
-*** LVM ***
-Situação dos metadados dos VGs: OK
 
 *** MISCELANEA ***
 Situação da coleta de consumo de recursos: OK
 Situação da integridade da base RPM: OK
+Situação da necessidade de reboot: OK
+Situação do /usr: OK

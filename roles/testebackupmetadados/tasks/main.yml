@@ -1,0 +1,23 @@
+---
+- name: Bloco do teste de backup de metadados de LVM
+  block:
+    - name: Coleta as informações sobre o backup dos metadados
+      ansible.builtin.command: lvm dumpconfig --typeconfig full backup
+      register: saida_backup_metadados
+
+    - name: Mostra
+      ansible.builtin.assert:
+        that:
+          - "'\tbackup=1' in saida_backup_metadados.stdout_lines"
+          - "'\tarchive=1' in saida_backup_metadados.stdout_lines"
+
+    - name: Considera OK para o relatório final
+      ansible.builtin.set_fact:
+        teste_backupmetadados: OK
+
+  rescue:
+    - name: Considera NOK para o relatório final
+      ansible.builtin.set_fact:
+        teste_backupmetadados: FAIL
+...
+

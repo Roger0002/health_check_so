@@ -130,11 +130,18 @@
       ansible.builtin.import_role:
         name: testemetadados
 
-    - name: Verifica de erro no acesso aos PVs
+    - name: Verifica de erro em comando de LVM
       tags:
         - lvm-geral
       ansible.builtin.import_role:
-        name: testeerroacessopvs
+        name: testeerrocomandopvs
+
+    - name: Verifica se backup de metadados está ativo
+      tags:
+        - lvm-geral
+      ansible.builtin.import_role:
+        name: testebackupmetadados
+
 
     # TESTES - MISCELÂNEA
     - name: Verifica a coleta do sysstat
@@ -148,6 +155,24 @@
         - miscelanea-geral
       ansible.builtin.import_role:
         name: testebaserpm
+
+    - name: Verifica a necessidade de reboot
+      tags:
+        - miscelanea-geral
+      ansible.builtin.import_role:
+        name: testerebootrequerido
+
+    - name: Verifica se o /usr não está apartado
+      tags:
+        - miscelanea-geral
+      ansible.builtin.import_role:
+        name: testeusrnaoapartado
+
+    - name: Verifica se o kdump está ativado
+      tags:
+        - miscelanea-geral
+      ansible.builtin.import_role:
+        name: testekdump
 
 
     # ÍNICIO DO AGRUPAMENTO DAS INFORMAÇÕES PARA EXIBIÇÃO
@@ -211,7 +236,8 @@
         status_geral_lvm: |
           *** LVM ***
           Situação dos metadados dos VGs: {{ teste_metadados | default("") }}
-          Situação do acesso aos PVs: {{ teste_erroacessopvs | default("") }}
+          Situação de erros no comando pvs: {{ teste_errocomandopvs | default("") }}
+          Situação do backup de metadados: {{ teste_backupmetadados | default("") }}
 
     - name: Resumo dos testes da seção de miscelanea
       tags:
@@ -221,6 +247,9 @@
           *** MISCELANEA ***
           Situação da coleta de consumo de recursos: {{ teste_sar | default("") }}
           Situação da integridade da base RPM: {{ teste_baserpm | default("") }}
+          Situação da necessidade de reboot: {{ teste_rebootrequerido | default("") }}
+          Situação do /usr: {{ teste_usrnaoapartado | default("") }}
+          Situação do kdump: {{ teste_kdump | default("") }}
 
     - name: Insere as informações no relatório
       tags:
