@@ -1,9 +1,6 @@
 ---
 - name: Bloco do teste do daemon do firewalld no ar e habilitado no boot
   block:
-    - name: Coleta os facts sobre os serviços
-      ansible.builtin.service_facts:
-
     - name: Testa se o firewalld está no ar e habilitado no boot
       ansible.builtin.assert:
         that:

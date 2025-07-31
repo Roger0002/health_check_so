@@ -1,8 +1,22 @@
 ---
 - name: Bloco do teste do kdump
   block:
-    - name: Verifica se o kdump está ativo
-      ansible.builtin.assert: {}
+    - name: Testa se o kdump está no ar e habilitado no boot
+      ansible.builtin.assert:
+        that: ansible_facts['services']['kdump.service']['status'] == 'enabled'
+
+    - name: Executa o kdumpctl estimate
+      ansible.builtin.command: kdumpctl estimate
+      register: saida_kdump_estimate
+
+    - name: Verifica se o tamanho configurado para o kdump é maior ou igual ao tamanho estimado
+      ansible.builtin.set_fact:
+        recommended_size: "{{ (saida_kdump_estimate['stdout_lines'] | select('match', '^Recommended crashkernel.*?$') | first | split())[2] | replace('M', '') }}"
+        reserved_size: "{{ (saida_kdump_estimate['stdout_lines'] | select('match', '^Reserved crashkernel.*?$') | first | split())[2] | replace('M', '') }}"
+
+    - name: Assegura que o tamanho do Crash Kernel atualmente configurado é igual ou maior que o recomendado
+      ansible.builtin.assert:
+        that: reserved_size >= recommended_size
 
     - name: Considera OK para o relatório final
       ansible.builtin.set_fact:
@@ -13,4 +27,3 @@
       ansible.builtin.set_fact:
         teste_kdump: FAIL
 ...
-

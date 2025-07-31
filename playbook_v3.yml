@@ -11,6 +11,19 @@
     arquivo_relatorio: relatorio_{{ inventory_hostname }}.txt
 
   tasks:
+    # COLETA DE FACTS ADICIONAIS
+    - name: Coleta os facts sobre os serviços
+      tags:
+        - seguranca-geral
+        - rede-geral
+        - lvm-geral
+        - authenticacao-geral
+        - miscelanea-geral
+        - acesso-conteudo-geral
+        - logging-geral
+
+      ansible.builtin.service_facts:
+
     # TESTES DE AUTENTICAÇÃO
     - name: Verifica uso do sss no /etc/nsswitch.conf
       tags:
