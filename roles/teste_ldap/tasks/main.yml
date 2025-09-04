@@ -7,8 +7,11 @@
         dest: ./
 
     - name: Executa o domando ldbsearch
-      ansible.builtin.shell: ldbsearch -H {{ inventory_hostname }}/var/lib/sss/db/cache_{{ teste_ldap_dominio }}.ldb "name={{ teste_ldap_usuario_teste_auth }}@{{ teste_ldap_dominio }}" dn
+      ansible.builtin.command: ldbsearch \
+        -H {{ inventory_hostname }}/var/lib/sss/db/cache_{{ teste_ldap_dominio }}.ldb \
+        "name={{ teste_ldap_usuario_teste_auth }}@{{ teste_ldap_dominio }}" dn
       delegate_to: localhost
+      changed_when: false
       register: raw_output_ldbsearch
 
     - name: Alimenta a lista lista_registros_encontrados_ldb com as entradas do cache
@@ -19,13 +22,14 @@
     - name: Remove as entradas do cache
       loop: "{{ lista_registros_encontrados_ldb }}"
       delegate_to: localhost
-      ansible.builtin.shell: ldbdel -H {{ inventory_hostname }}/var/lib/sss/db/cache_{{ teste_ldap_dominio }}.ldb {{ item }}
+      ansible.builtin.command: ldbdel -H {{ inventory_hostname }}/var/lib/sss/db/cache_{{ teste_ldap_dominio }}.ldb {{ item }}
+      changed_when: false
 
     - name: Copia o cache de volta para a máquina
       ansible.builtin.copy:
         src: "{{ inventory_hostname }}/var/lib/sss/db/cache_{{ teste_ldap_dominio }}.ldb"
         dest: /var/lib/sss/db
-        mode: 0600
+        mode: "0600"
         owner: root
         group: root
 
