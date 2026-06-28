@@ -1,0 +1,244 @@
+*** AUTENTICAÇÃO ***
+Situação do nsswitch: OK
+Situação da conectividade com o LDAP: OK
+Situação do daemon do sssd: OK
+
+*** ACESSO A CONTEÚDO ***
+Situação dos repositórios padrão: OK
+Situação de download de pacotes: OK
+Situação do registro no insights: OK
+
+*** LOGGING ***
+Situação do daemon do rsyslog: OK
+Situação de escrita nos logs: OK
+
+*** SEGURANÇA ***
+Situação de bugs: FAIL
+Situação de falha de segurança: FAIL
+Situação do audit: OK
+Situação do SElinux: OK
+Situação das violações de SElinux: OK
+Situação do firewalld: OK
+
+*** REDE ***
+Situação da resolução externa de DNS: OK
+Situação do hostname em /etc/hosts: OK
+Situação do incremento de pacotes com erro: OK
+Situação do sincronismo com fontes NTP: OK
+
+*** LVM ***
+Situação dos metadados dos VGs: OK
+Situação de erros no comando pvs: OK
+Situação do backup de metadados: OK
+
+*** MISCELANEA ***
+Situação da coleta de consumo de recursos: OK
+Situação da integridade da base RPM: OK
+Situação da necessidade de reboot: OK
+Situação do /usr: OK
+Situação do kdump: OK
+
+*** UPTIME + LOAD AVERAGE ***
+ 16:46:52 up  7:46,  2 users,  load average: 0.48, 0.18, 0.12
+
+*** SITUAÇÃO DO PERFIL DO TUNED ***
+Current active profile: virtual-guest
+
+*** CONSUMO DE BANDA NAS INTERFACES ***
+Interface enp1s0:
+TX: 0 mbps
+RX: 0 mbps
+
+*** PRESENÇA DA STRING 'ERROR' NOS PRINCIPAIS LOGS ***
+/var/log/messages:Jun 28 09:32:10 clienterhel10 python3[24450]: ansible-ansible.builtin.slurp Invoked with src=/sys/class/net/enp1s0/statistics/rx_errors
+/var/log/messages:Jun 28 09:32:11 clienterhel10 python3[24606]: ansible-ansible.builtin.slurp Invoked with src=/sys/class/net/enp1s0/statistics/tx_errors
+/var/log/messages:Jun 28 09:37:27 clienterhel10 python3[32920]: ansible-ansible.builtin.slurp Invoked with src=/sys/class/net/enp1s0/statistics/rx_errors
+/var/log/messages:Jun 28 09:37:27 clienterhel10 python3[33076]: ansible-ansible.builtin.slurp Invoked with src=/sys/class/net/enp1s0/statistics/tx_errors
+/var/log/messages:Jun 28 10:15:26 clienterhel10 python3[41487]: ansible-ansible.builtin.slurp Invoked with src=/sys/class/net/enp1s0/statistics/rx_errors
+/var/log/messages:Jun 28 10:15:27 clienterhel10 python3[41643]: ansible-ansible.builtin.slurp Invoked with src=/sys/class/net/enp1s0/statistics/tx_errors
+/var/log/messages:Jun 28 10:15:57 clienterhel10 python3[44593]: ansible-ansible.legacy.command Invoked with _raw_params=grep -i error /var/log/secure /var/log/messages _uses_shell=False expand_argument_vars=True stdin_add_newline=True strip_empty_ends=True argv=None chdir=None executable=None creates=None removes=None stdin=None
+/var/log/messages:Jun 28 10:28:46 clienterhel10 python3[47821]: ansible-ansible.legacy.command Invoked with _raw_params=grep -i error /var/log/secure /var/log/messages _uses_shell=False expand_argument_vars=True stdin_add_newline=True strip_empty_ends=True argv=None chdir=None executable=None creates=None removes=None stdin=None
+/var/log/messages:Jun 28 10:36:28 clienterhel10 python3[49039]: ansible-ansible.legacy.command Invoked with _raw_params=grep -i error /var/log/secure /var/log/messages _uses_shell=False expand_argument_vars=True stdin_add_newline=True strip_empty_ends=True argv=None chdir=None executable=None creates=None removes=None stdin=None
+/var/log/messages:Jun 28 10:37:31 clienterhel10 python3[50207]: ansible-ansible.legacy.command Invoked with _raw_params=grep -i error /var/log/secure /var/log/messages _uses_shell=False expand_argument_vars=True stdin_add_newline=True strip_empty_ends=True argv=None chdir=None executable=None creates=None removes=None stdin=None
+/var/log/messages:Jun 28 10:38:53 clienterhel10 python3[55735]: ansible-ansible.builtin.slurp Invoked with src=/sys/class/net/enp1s0/statistics/rx_errors
+/var/log/messages:Jun 28 10:38:53 clienterhel10 python3[55891]: ansible-ansible.builtin.slurp Invoked with src=/sys/class/net/enp1s0/statistics/tx_errors
+/var/log/messages:Jun 28 10:39:22 clienterhel10 python3[58842]: ansible-ansible.legacy.command Invoked with _raw_params=grep -i error /var/log/secure /var/log/messages _uses_shell=False expand_argument_vars=True stdin_add_newline=True strip_empty_ends=True argv=None chdir=None executable=None creates=None removes=None stdin=None
+/var/log/messages:Jun 28 10:56:46 clienterhel10 python3[64446]: ansible-ansible.builtin.slurp Invoked with src=/sys/class/net/enp1s0/statistics/rx_errors
+/var/log/messages:Jun 28 10:56:47 clienterhel10 python3[64602]: ansible-ansible.builtin.slurp Invoked with src=/sys/class/net/enp1s0/statistics/tx_errors
+/var/log/messages:Jun 28 10:57:15 clienterhel10 python3[67553]: ansible-ansible.legacy.command Invoked with _raw_params=grep -i error /var/log/secure /var/log/messages _uses_shell=False expand_argument_vars=True stdin_add_newline=True strip_empty_ends=True argv=None chdir=None executable=None creates=None removes=None stdin=None
+/var/log/messages:Jun 28 10:57:16 clienterhel10 python3[67710]: ansible-ansible.legacy.command Invoked with _raw_params=journalctl --no-pager -g error _uses_shell=False expand_argument_vars=True stdin_add_newline=True strip_empty_ends=True argv=None chdir=None executable=None creates=None removes=None stdin=None
+/var/log/messages:Jun 28 11:00:36 clienterhel10 python3[68911]: ansible-ansible.legacy.command Invoked with _raw_params=grep -i error /var/log/secure /var/log/messages _uses_shell=False expand_argument_vars=True stdin_add_newline=True strip_empty_ends=True argv=None chdir=None executable=None creates=None removes=None stdin=None
+/var/log/messages:Jun 28 11:00:37 clienterhel10 python3[69068]: ansible-ansible.legacy.command Invoked with _raw_params=journalctl --no-pager -g error _uses_shell=False expand_argument_vars=True stdin_add_newline=True strip_empty_ends=True argv=None chdir=None executable=None creates=None removes=None stdin=None
+/var/log/messages:Jun 28 11:50:11 clienterhel10 python3[74794]: ansible-ansible.builtin.slurp Invoked with src=/sys/class/net/enp1s0/statistics/rx_errors
+/var/log/messages:Jun 28 11:50:11 clienterhel10 python3[74950]: ansible-ansible.builtin.slurp Invoked with src=/sys/class/net/enp1s0/statistics/tx_errors
+/var/log/messages:Jun 28 11:50:39 clienterhel10 python3[77899]: ansible-ansible.legacy.command Invoked with _raw_params=grep -i error /var/log/secure /var/log/messages _uses_shell=False expand_argument_vars=True stdin_add_newline=True strip_empty_ends=True argv=None chdir=None executable=None creates=None removes=None stdin=None
+/var/log/messages:Jun 28 11:50:40 clienterhel10 python3[78056]: ansible-ansible.legacy.command Invoked with _raw_params=journalctl --no-pager -g error _uses_shell=False expand_argument_vars=True stdin_add_newline=True strip_empty_ends=True argv=None chdir=None executable=None creates=None removes=None stdin=None
+/var/log/messages:Jun 28 11:59:50 clienterhel10 python3[83792]: ansible-ansible.builtin.slurp Invoked with src=/sys/class/net/enp1s0/statistics/rx_errors
+/var/log/messages:Jun 28 11:59:50 clienterhel10 python3[83948]: ansible-ansible.builtin.slurp Invoked with src=/sys/class/net/enp1s0/statistics/tx_errors
+/var/log/messages:Jun 28 12:00:21 clienterhel10 python3[86899]: ansible-ansible.legacy.command Invoked with _raw_params=grep -i error /var/log/secure /var/log/messages _uses_shell=False expand_argument_vars=True stdin_add_newline=True strip_empty_ends=True argv=None chdir=None executable=None creates=None removes=None stdin=None
+/var/log/messages:Jun 28 12:00:21 clienterhel10 python3[87056]: ansible-ansible.legacy.command Invoked with _raw_params=journalctl --no-pager -g error _uses_shell=False expand_argument_vars=True stdin_add_newline=True strip_empty_ends=True argv=None chdir=None executable=None creates=None removes=None stdin=None
+/var/log/messages:Jun 28 12:02:13 clienterhel10 python3[92757]: ansible-ansible.builtin.slurp Invoked with src=/sys/class/net/enp1s0/statistics/rx_errors
+/var/log/messages:Jun 28 12:02:14 clienterhel10 python3[92913]: ansible-ansible.builtin.slurp Invoked with src=/sys/class/net/enp1s0/statistics/tx_errors
+/var/log/messages:Jun 28 12:02:43 clienterhel10 python3[95862]: ansible-ansible.legacy.command Invoked with _raw_params=grep -i error /var/log/secure /var/log/messages _uses_shell=False expand_argument_vars=True stdin_add_newline=True strip_empty_ends=True argv=None chdir=None executable=None creates=None removes=None stdin=None
+/var/log/messages:Jun 28 12:02:43 clienterhel10 python3[96019]: ansible-ansible.legacy.command Invoked with _raw_params=journalctl --no-pager -g error _uses_shell=False expand_argument_vars=True stdin_add_newline=True strip_empty_ends=True argv=None chdir=None executable=None creates=None removes=None stdin=None
+/var/log/messages:Jun 28 12:05:54 clienterhel10 python3[101734]: ansible-ansible.builtin.slurp Invoked with src=/sys/class/net/enp1s0/statistics/rx_errors
+/var/log/messages:Jun 28 12:05:55 clienterhel10 python3[101890]: ansible-ansible.builtin.slurp Invoked with src=/sys/class/net/enp1s0/statistics/tx_errors
+/var/log/messages:Jun 28 12:06:24 clienterhel10 python3[104842]: ansible-ansible.legacy.command Invoked with _raw_params=grep -i error /var/log/secure /var/log/messages _uses_shell=False expand_argument_vars=True stdin_add_newline=True strip_empty_ends=True argv=None chdir=None executable=None creates=None removes=None stdin=None
+/var/log/messages:Jun 28 12:06:24 clienterhel10 python3[104999]: ansible-ansible.legacy.command Invoked with _raw_params=journalctl --no-pager -g error _uses_shell=False expand_argument_vars=True stdin_add_newline=True strip_empty_ends=True argv=None chdir=None executable=None creates=None removes=None stdin=None
+/var/log/messages:Jun 28 12:23:51 clienterhel10 python3[110760]: ansible-ansible.builtin.slurp Invoked with src=/sys/class/net/enp1s0/statistics/rx_errors
+/var/log/messages:Jun 28 12:23:51 clienterhel10 python3[110916]: ansible-ansible.builtin.slurp Invoked with src=/sys/class/net/enp1s0/statistics/tx_errors
+/var/log/messages:Jun 28 12:24:21 clienterhel10 python3[113867]: ansible-ansible.legacy.command Invoked with _raw_params=grep -i error /var/log/secure /var/log/messages _uses_shell=False expand_argument_vars=True stdin_add_newline=True strip_empty_ends=True argv=None chdir=None executable=None creates=None removes=None stdin=None
+/var/log/messages:Jun 28 12:24:21 clienterhel10 python3[114024]: ansible-ansible.legacy.command Invoked with _raw_params=journalctl --no-pager -g error _uses_shell=False expand_argument_vars=True stdin_add_newline=True strip_empty_ends=True argv=None chdir=None executable=None creates=None removes=None stdin=None
+/var/log/messages:Jun 28 12:26:50 clienterhel10 python3[120435]: ansible-ansible.builtin.slurp Invoked with src=/sys/class/net/enp1s0/statistics/rx_errors
+/var/log/messages:Jun 28 12:26:50 clienterhel10 python3[120591]: ansible-ansible.builtin.slurp Invoked with src=/sys/class/net/enp1s0/statistics/tx_errors
+/var/log/messages:Jun 28 12:27:19 clienterhel10 python3[123542]: ansible-ansible.legacy.command Invoked with _raw_params=grep -i error /var/log/secure /var/log/messages _uses_shell=False expand_argument_vars=True stdin_add_newline=True strip_empty_ends=True argv=None chdir=None executable=None creates=None removes=None stdin=None
+/var/log/messages:Jun 28 12:27:20 clienterhel10 python3[123699]: ansible-ansible.legacy.command Invoked with _raw_params=journalctl --no-pager -g error _uses_shell=False expand_argument_vars=True stdin_add_newline=True strip_empty_ends=True argv=None chdir=None executable=None creates=None removes=None stdin=None
+/var/log/messages:Jun 28 12:34:19 clienterhel10 python3[130124]: ansible-ansible.builtin.slurp Invoked with src=/sys/class/net/enp1s0/statistics/rx_errors
+/var/log/messages:Jun 28 12:34:20 clienterhel10 python3[130280]: ansible-ansible.builtin.slurp Invoked with src=/sys/class/net/enp1s0/statistics/tx_errors
+/var/log/messages:Jun 28 12:34:47 clienterhel10 python3[132930]: ansible-ansible.legacy.command Invoked with _raw_params=grep -i error /var/log/secure /var/log/messages _uses_shell=False expand_argument_vars=True stdin_add_newline=True strip_empty_ends=True argv=None chdir=None executable=None creates=None removes=None stdin=None
+/var/log/messages:Jun 28 12:34:47 clienterhel10 python3[133087]: ansible-ansible.legacy.command Invoked with _raw_params=journalctl --no-pager -g error _uses_shell=False expand_argument_vars=True stdin_add_newline=True strip_empty_ends=True argv=None chdir=None executable=None creates=None removes=None stdin=None
+/var/log/messages:Jun 28 15:09:23 clienterhel10 python3[140172]: ansible-ansible.builtin.slurp Invoked with src=/sys/class/net/enp1s0/statistics/rx_errors
+/var/log/messages:Jun 28 15:09:23 clienterhel10 python3[140328]: ansible-ansible.builtin.slurp Invoked with src=/sys/class/net/enp1s0/statistics/tx_errors
+/var/log/messages:Jun 28 15:09:51 clienterhel10 python3[142978]: ansible-ansible.legacy.command Invoked with _raw_params=grep -i error /var/log/secure /var/log/messages _uses_shell=False expand_argument_vars=True stdin_add_newline=True strip_empty_ends=True argv=None chdir=None executable=None creates=None removes=None stdin=None
+/var/log/messages:Jun 28 15:09:51 clienterhel10 python3[143135]: ansible-ansible.legacy.command Invoked with _raw_params=journalctl --no-pager -g error _uses_shell=False expand_argument_vars=True stdin_add_newline=True strip_empty_ends=True argv=None chdir=None executable=None creates=None removes=None stdin=None
+/var/log/messages:Jun 28 15:33:02 clienterhel10 python3[149682]: ansible-ansible.builtin.slurp Invoked with src=/sys/class/net/enp1s0/statistics/rx_errors
+/var/log/messages:Jun 28 15:33:02 clienterhel10 python3[149838]: ansible-ansible.builtin.slurp Invoked with src=/sys/class/net/enp1s0/statistics/tx_errors
+/var/log/messages:Jun 28 15:33:30 clienterhel10 python3[152489]: ansible-ansible.legacy.command Invoked with _raw_params=grep -i error /var/log/secure /var/log/messages _uses_shell=False expand_argument_vars=True stdin_add_newline=True strip_empty_ends=True argv=None chdir=None executable=None creates=None removes=None stdin=None
+/var/log/messages:Jun 28 15:33:31 clienterhel10 python3[152646]: ansible-ansible.legacy.command Invoked with _raw_params=journalctl --no-pager -g error _uses_shell=False expand_argument_vars=True stdin_add_newline=True strip_empty_ends=True argv=None chdir=None executable=None creates=None removes=None stdin=None
+/var/log/messages:Jun 28 15:36:37 clienterhel10 python3[165799]: ansible-ansible.builtin.slurp Invoked with src=/sys/class/net/enp1s0/statistics/rx_errors
+/var/log/messages:Jun 28 15:36:37 clienterhel10 python3[165955]: ansible-ansible.builtin.slurp Invoked with src=/sys/class/net/enp1s0/statistics/tx_errors
+/var/log/messages:Jun 28 15:37:05 clienterhel10 python3[168607]: ansible-ansible.legacy.command Invoked with _raw_params=grep -i error /var/log/secure /var/log/messages _uses_shell=False expand_argument_vars=True stdin_add_newline=True strip_empty_ends=True argv=None chdir=None executable=None creates=None removes=None stdin=None
+/var/log/messages:Jun 28 15:37:06 clienterhel10 python3[168764]: ansible-ansible.legacy.command Invoked with _raw_params=journalctl --no-pager -g error _uses_shell=False expand_argument_vars=True stdin_add_newline=True strip_empty_ends=True argv=None chdir=None executable=None creates=None removes=None stdin=None
+/var/log/messages:Jun 28 15:38:56 clienterhel10 python3[175147]: ansible-ansible.builtin.slurp Invoked with src=/sys/class/net/enp1s0/statistics/rx_errors
+/var/log/messages:Jun 28 15:38:56 clienterhel10 python3[175303]: ansible-ansible.builtin.slurp Invoked with src=/sys/class/net/enp1s0/statistics/tx_errors
+/var/log/messages:Jun 28 15:39:26 clienterhel10 python3[177955]: ansible-ansible.legacy.command Invoked with _raw_params=grep -i error /var/log/secure /var/log/messages _uses_shell=False expand_argument_vars=True stdin_add_newline=True strip_empty_ends=True argv=None chdir=None executable=None creates=None removes=None stdin=None
+/var/log/messages:Jun 28 15:39:26 clienterhel10 python3[178112]: ansible-ansible.legacy.command Invoked with _raw_params=journalctl --no-pager -g error _uses_shell=False expand_argument_vars=True stdin_add_newline=True strip_empty_ends=True argv=None chdir=None executable=None creates=None removes=None stdin=None
+/var/log/messages:Jun 28 15:41:16 clienterhel10 python3[184495]: ansible-ansible.builtin.slurp Invoked with src=/sys/class/net/enp1s0/statistics/rx_errors
+/var/log/messages:Jun 28 15:41:17 clienterhel10 python3[184651]: ansible-ansible.builtin.slurp Invoked with src=/sys/class/net/enp1s0/statistics/tx_errors
+/var/log/messages:Jun 28 15:41:45 clienterhel10 python3[187301]: ansible-ansible.legacy.command Invoked with _raw_params=grep -i error /var/log/secure /var/log/messages _uses_shell=False expand_argument_vars=True stdin_add_newline=True strip_empty_ends=True argv=None chdir=None executable=None creates=None removes=None stdin=None
+/var/log/messages:Jun 28 15:41:45 clienterhel10 python3[187458]: ansible-ansible.legacy.command Invoked with _raw_params=journalctl --no-pager -g error _uses_shell=False expand_argument_vars=True stdin_add_newline=True strip_empty_ends=True argv=None chdir=None executable=None creates=None removes=None stdin=None
+/var/log/messages:Jun 28 15:51:11 clienterhel10 python3[193893]: ansible-ansible.builtin.slurp Invoked with src=/sys/class/net/enp1s0/statistics/rx_errors
+/var/log/messages:Jun 28 15:51:11 clienterhel10 python3[194049]: ansible-ansible.builtin.slurp Invoked with src=/sys/class/net/enp1s0/statistics/tx_errors
+/var/log/messages:Jun 28 15:51:39 clienterhel10 python3[196699]: ansible-ansible.legacy.command Invoked with _raw_params=grep -i error /var/log/secure /var/log/messages _uses_shell=False expand_argument_vars=True stdin_add_newline=True strip_empty_ends=True argv=None chdir=None executable=None creates=None removes=None stdin=None
+/var/log/messages:Jun 28 15:51:39 clienterhel10 python3[196856]: ansible-ansible.legacy.command Invoked with _raw_params=journalctl --no-pager -g error _uses_shell=False expand_argument_vars=True stdin_add_newline=True strip_empty_ends=True argv=None chdir=None executable=None creates=None removes=None stdin=None
+/var/log/messages:Jun 28 16:11:16 clienterhel10 python3[203334]: ansible-ansible.builtin.slurp Invoked with src=/sys/class/net/enp1s0/statistics/rx_errors
+/var/log/messages:Jun 28 16:11:17 clienterhel10 python3[203490]: ansible-ansible.builtin.slurp Invoked with src=/sys/class/net/enp1s0/statistics/tx_errors
+/var/log/messages:Jun 28 16:11:44 clienterhel10 python3[206140]: ansible-ansible.legacy.command Invoked with _raw_params=grep -i error /var/log/secure /var/log/messages _uses_shell=False expand_argument_vars=True stdin_add_newline=True strip_empty_ends=True argv=None chdir=None executable=None creates=None removes=None stdin=None
+/var/log/messages:Jun 28 16:11:44 clienterhel10 python3[206297]: ansible-ansible.legacy.command Invoked with _raw_params=journalctl --no-pager -g error _uses_shell=False expand_argument_vars=True stdin_add_newline=True strip_empty_ends=True argv=None chdir=None executable=None creates=None removes=None stdin=None
+/var/log/messages:Jun 28 16:27:05 clienterhel10 python3[212753]: ansible-ansible.builtin.slurp Invoked with src=/sys/class/net/enp1s0/statistics/rx_errors
+/var/log/messages:Jun 28 16:27:05 clienterhel10 python3[212909]: ansible-ansible.builtin.slurp Invoked with src=/sys/class/net/enp1s0/statistics/tx_errors
+/var/log/messages:Jun 28 16:27:32 clienterhel10 python3[215559]: ansible-ansible.legacy.command Invoked with _raw_params=grep -i error /var/log/secure /var/log/messages _uses_shell=False expand_argument_vars=True stdin_add_newline=True strip_empty_ends=True argv=None chdir=None executable=None creates=None removes=None stdin=None
+/var/log/messages:Jun 28 16:27:33 clienterhel10 python3[215716]: ansible-ansible.legacy.command Invoked with _raw_params=journalctl --no-pager -g error _uses_shell=False expand_argument_vars=True stdin_add_newline=True strip_empty_ends=True argv=None chdir=None executable=None creates=None removes=None stdin=None
+/var/log/messages:Jun 28 16:30:48 clienterhel10 python3[222716]: ansible-ansible.builtin.slurp Invoked with src=/sys/class/net/enp1s0/statistics/rx_errors
+/var/log/messages:Jun 28 16:30:48 clienterhel10 python3[222872]: ansible-ansible.builtin.slurp Invoked with src=/sys/class/net/enp1s0/statistics/tx_errors
+/var/log/messages:Jun 28 16:31:16 clienterhel10 python3[225524]: ansible-ansible.legacy.command Invoked with _raw_params=grep -i error /var/log/secure /var/log/messages _uses_shell=False expand_argument_vars=True stdin_add_newline=True strip_empty_ends=True argv=None chdir=None executable=None creates=None removes=None stdin=None
+/var/log/messages:Jun 28 16:31:17 clienterhel10 python3[225681]: ansible-ansible.legacy.command Invoked with _raw_params=journalctl --no-pager -g error _uses_shell=False expand_argument_vars=True stdin_add_newline=True strip_empty_ends=True argv=None chdir=None executable=None creates=None removes=None stdin=None
+/var/log/messages:Jun 28 16:34:54 clienterhel10 python3[232252]: ansible-ansible.builtin.slurp Invoked with src=/sys/class/net/enp1s0/statistics/rx_errors
+/var/log/messages:Jun 28 16:34:54 clienterhel10 python3[232408]: ansible-ansible.builtin.slurp Invoked with src=/sys/class/net/enp1s0/statistics/tx_errors
+/var/log/messages:Jun 28 16:35:22 clienterhel10 python3[235061]: ansible-ansible.legacy.command Invoked with _raw_params=grep -i error /var/log/secure /var/log/messages _uses_shell=False expand_argument_vars=True stdin_add_newline=True strip_empty_ends=True argv=None chdir=None executable=None creates=None removes=None stdin=None
+/var/log/messages:Jun 28 16:35:22 clienterhel10 python3[235218]: ansible-ansible.legacy.command Invoked with _raw_params=journalctl --no-pager -g error _uses_shell=False expand_argument_vars=True stdin_add_newline=True strip_empty_ends=True argv=None chdir=None executable=None creates=None removes=None stdin=None
+/var/log/messages:Jun 28 16:39:34 clienterhel10 python3[241789]: ansible-ansible.builtin.slurp Invoked with src=/sys/class/net/enp1s0/statistics/rx_errors
+/var/log/messages:Jun 28 16:39:34 clienterhel10 python3[241945]: ansible-ansible.builtin.slurp Invoked with src=/sys/class/net/enp1s0/statistics/tx_errors
+/var/log/messages:Jun 28 16:40:08 clienterhel10 python3[244600]: ansible-ansible.legacy.command Invoked with _raw_params=grep -i error /var/log/secure /var/log/messages _uses_shell=False expand_argument_vars=True stdin_add_newline=True strip_empty_ends=True argv=None chdir=None executable=None creates=None removes=None stdin=None
+/var/log/messages:Jun 28 16:40:08 clienterhel10 python3[244757]: ansible-ansible.legacy.command Invoked with _raw_params=journalctl --no-pager -g error _uses_shell=False expand_argument_vars=True stdin_add_newline=True strip_empty_ends=True argv=None chdir=None executable=None creates=None removes=None stdin=None
+/var/log/messages:Jun 28 16:46:23 clienterhel10 python3[251337]: ansible-ansible.builtin.slurp Invoked with src=/sys/class/net/enp1s0/statistics/rx_errors
+/var/log/messages:Jun 28 16:46:23 clienterhel10 python3[251493]: ansible-ansible.builtin.slurp Invoked with src=/sys/class/net/enp1s0/statistics/tx_errors
+Jun 28 09:03:23 clienterhel10.s2linux.local python3.12[7216]: ansible-ansible.builtin.slurp Invoked with src=/sys/class/net/enp1s0/statistics/rx_errors
+Jun 28 09:03:23 clienterhel10.s2linux.local python3.12[7372]: ansible-ansible.builtin.slurp Invoked with src=/sys/class/net/enp1s0/statistics/tx_errors
+Jun 28 09:15:48 clienterhel10.s2linux.local python3.12[15733]: ansible-ansible.builtin.slurp Invoked with src=/sys/class/net/enp1s0/statistics/rx_errors
+Jun 28 09:15:48 clienterhel10.s2linux.local python3.12[15889]: ansible-ansible.builtin.slurp Invoked with src=/sys/class/net/enp1s0/statistics/tx_errors
+Jun 28 09:32:10 clienterhel10.s2linux.local python3[24450]: ansible-ansible.builtin.slurp Invoked with src=/sys/class/net/enp1s0/statistics/rx_errors
+Jun 28 09:32:11 clienterhel10.s2linux.local python3[24606]: ansible-ansible.builtin.slurp Invoked with src=/sys/class/net/enp1s0/statistics/tx_errors
+Jun 28 09:37:27 clienterhel10.s2linux.local python3[32920]: ansible-ansible.builtin.slurp Invoked with src=/sys/class/net/enp1s0/statistics/rx_errors
+Jun 28 09:37:27 clienterhel10.s2linux.local python3[33076]: ansible-ansible.builtin.slurp Invoked with src=/sys/class/net/enp1s0/statistics/tx_errors
+Jun 28 10:15:26 clienterhel10.s2linux.local python3[41487]: ansible-ansible.builtin.slurp Invoked with src=/sys/class/net/enp1s0/statistics/rx_errors
+Jun 28 10:15:27 clienterhel10.s2linux.local python3[41643]: ansible-ansible.builtin.slurp Invoked with src=/sys/class/net/enp1s0/statistics/tx_errors
+Jun 28 10:15:57 clienterhel10.s2linux.local python3[44593]: ansible-ansible.legacy.command Invoked with _raw_params=grep -i error /var/log/secure /var/log/messages _uses_shell=False expand_argument_vars=True stdin_add_newline=True strip_empty_ends=True argv=None chdir=None executable=None creates=None removes=None stdin=None
+Jun 28 10:28:46 clienterhel10.s2linux.local python3[47821]: ansible-ansible.legacy.command Invoked with _raw_params=grep -i error /var/log/secure /var/log/messages _uses_shell=False expand_argument_vars=True stdin_add_newline=True strip_empty_ends=True argv=None chdir=None executable=None creates=None removes=None stdin=None
+Jun 28 10:36:28 clienterhel10.s2linux.local python3[49039]: ansible-ansible.legacy.command Invoked with _raw_params=grep -i error /var/log/secure /var/log/messages _uses_shell=False expand_argument_vars=True stdin_add_newline=True strip_empty_ends=True argv=None chdir=None executable=None creates=None removes=None stdin=None
+Jun 28 10:37:31 clienterhel10.s2linux.local python3[50207]: ansible-ansible.legacy.command Invoked with _raw_params=grep -i error /var/log/secure /var/log/messages _uses_shell=False expand_argument_vars=True stdin_add_newline=True strip_empty_ends=True argv=None chdir=None executable=None creates=None removes=None stdin=None
+Jun 28 10:38:53 clienterhel10.s2linux.local python3[55735]: ansible-ansible.builtin.slurp Invoked with src=/sys/class/net/enp1s0/statistics/rx_errors
+Jun 28 10:38:53 clienterhel10.s2linux.local python3[55891]: ansible-ansible.builtin.slurp Invoked with src=/sys/class/net/enp1s0/statistics/tx_errors
+Jun 28 10:39:22 clienterhel10.s2linux.local python3[58842]: ansible-ansible.legacy.command Invoked with _raw_params=grep -i error /var/log/secure /var/log/messages _uses_shell=False expand_argument_vars=True stdin_add_newline=True strip_empty_ends=True argv=None chdir=None executable=None creates=None removes=None stdin=None
+Jun 28 10:56:46 clienterhel10.s2linux.local python3[64446]: ansible-ansible.builtin.slurp Invoked with src=/sys/class/net/enp1s0/statistics/rx_errors
+Jun 28 10:56:47 clienterhel10.s2linux.local python3[64602]: ansible-ansible.builtin.slurp Invoked with src=/sys/class/net/enp1s0/statistics/tx_errors
+Jun 28 10:57:15 clienterhel10.s2linux.local python3[67553]: ansible-ansible.legacy.command Invoked with _raw_params=grep -i error /var/log/secure /var/log/messages _uses_shell=False expand_argument_vars=True stdin_add_newline=True strip_empty_ends=True argv=None chdir=None executable=None creates=None removes=None stdin=None
+Jun 28 10:57:16 clienterhel10.s2linux.local python3[67710]: ansible-ansible.legacy.command Invoked with _raw_params=journalctl --no-pager -g error _uses_shell=False expand_argument_vars=True stdin_add_newline=True strip_empty_ends=True argv=None chdir=None executable=None creates=None removes=None stdin=None
+Jun 28 11:00:36 clienterhel10.s2linux.local python3[68911]: ansible-ansible.legacy.command Invoked with _raw_params=grep -i error /var/log/secure /var/log/messages _uses_shell=False expand_argument_vars=True stdin_add_newline=True strip_empty_ends=True argv=None chdir=None executable=None creates=None removes=None stdin=None
+Jun 28 11:00:37 clienterhel10.s2linux.local python3[69068]: ansible-ansible.legacy.command Invoked with _raw_params=journalctl --no-pager -g error _uses_shell=False expand_argument_vars=True stdin_add_newline=True strip_empty_ends=True argv=None chdir=None executable=None creates=None removes=None stdin=None
+Jun 28 11:50:11 clienterhel10.s2linux.local python3[74794]: ansible-ansible.builtin.slurp Invoked with src=/sys/class/net/enp1s0/statistics/rx_errors
+Jun 28 11:50:11 clienterhel10.s2linux.local python3[74950]: ansible-ansible.builtin.slurp Invoked with src=/sys/class/net/enp1s0/statistics/tx_errors
+Jun 28 11:50:39 clienterhel10.s2linux.local python3[77899]: ansible-ansible.legacy.command Invoked with _raw_params=grep -i error /var/log/secure /var/log/messages _uses_shell=False expand_argument_vars=True stdin_add_newline=True strip_empty_ends=True argv=None chdir=None executable=None creates=None removes=None stdin=None
+Jun 28 11:50:40 clienterhel10.s2linux.local python3[78056]: ansible-ansible.legacy.command Invoked with _raw_params=journalctl --no-pager -g error _uses_shell=False expand_argument_vars=True stdin_add_newline=True strip_empty_ends=True argv=None chdir=None executable=None creates=None removes=None stdin=None
+Jun 28 11:59:50 clienterhel10.s2linux.local python3[83792]: ansible-ansible.builtin.slurp Invoked with src=/sys/class/net/enp1s0/statistics/rx_errors
+Jun 28 11:59:50 clienterhel10.s2linux.local python3[83948]: ansible-ansible.builtin.slurp Invoked with src=/sys/class/net/enp1s0/statistics/tx_errors
+Jun 28 12:00:21 clienterhel10.s2linux.local python3[86899]: ansible-ansible.legacy.command Invoked with _raw_params=grep -i error /var/log/secure /var/log/messages _uses_shell=False expand_argument_vars=True stdin_add_newline=True strip_empty_ends=True argv=None chdir=None executable=None creates=None removes=None stdin=None
+Jun 28 12:00:21 clienterhel10.s2linux.local python3[87056]: ansible-ansible.legacy.command Invoked with _raw_params=journalctl --no-pager -g error _uses_shell=False expand_argument_vars=True stdin_add_newline=True strip_empty_ends=True argv=None chdir=None executable=None creates=None removes=None stdin=None
+Jun 28 12:02:13 clienterhel10.s2linux.local python3[92757]: ansible-ansible.builtin.slurp Invoked with src=/sys/class/net/enp1s0/statistics/rx_errors
+Jun 28 12:02:14 clienterhel10.s2linux.local python3[92913]: ansible-ansible.builtin.slurp Invoked with src=/sys/class/net/enp1s0/statistics/tx_errors
+Jun 28 12:02:43 clienterhel10.s2linux.local python3[95862]: ansible-ansible.legacy.command Invoked with _raw_params=grep -i error /var/log/secure /var/log/messages _uses_shell=False expand_argument_vars=True stdin_add_newline=True strip_empty_ends=True argv=None chdir=None executable=None creates=None removes=None stdin=None
+Jun 28 12:02:43 clienterhel10.s2linux.local python3[96019]: ansible-ansible.legacy.command Invoked with _raw_params=journalctl --no-pager -g error _uses_shell=False expand_argument_vars=True stdin_add_newline=True strip_empty_ends=True argv=None chdir=None executable=None creates=None removes=None stdin=None
+Jun 28 12:05:54 clienterhel10.s2linux.local python3[101734]: ansible-ansible.builtin.slurp Invoked with src=/sys/class/net/enp1s0/statistics/rx_errors
+Jun 28 12:05:55 clienterhel10.s2linux.local python3[101890]: ansible-ansible.builtin.slurp Invoked with src=/sys/class/net/enp1s0/statistics/tx_errors
+Jun 28 12:06:24 clienterhel10.s2linux.local python3[104842]: ansible-ansible.legacy.command Invoked with _raw_params=grep -i error /var/log/secure /var/log/messages _uses_shell=False expand_argument_vars=True stdin_add_newline=True strip_empty_ends=True argv=None chdir=None executable=None creates=None removes=None stdin=None
+Jun 28 12:06:24 clienterhel10.s2linux.local python3[104999]: ansible-ansible.legacy.command Invoked with _raw_params=journalctl --no-pager -g error _uses_shell=False expand_argument_vars=True stdin_add_newline=True strip_empty_ends=True argv=None chdir=None executable=None creates=None removes=None stdin=None
+Jun 28 12:23:51 clienterhel10.s2linux.local python3[110760]: ansible-ansible.builtin.slurp Invoked with src=/sys/class/net/enp1s0/statistics/rx_errors
+Jun 28 12:23:51 clienterhel10.s2linux.local python3[110916]: ansible-ansible.builtin.slurp Invoked with src=/sys/class/net/enp1s0/statistics/tx_errors
+Jun 28 12:24:21 clienterhel10.s2linux.local python3[113867]: ansible-ansible.legacy.command Invoked with _raw_params=grep -i error /var/log/secure /var/log/messages _uses_shell=False expand_argument_vars=True stdin_add_newline=True strip_empty_ends=True argv=None chdir=None executable=None creates=None removes=None stdin=None
+Jun 28 12:24:21 clienterhel10.s2linux.local python3[114024]: ansible-ansible.legacy.command Invoked with _raw_params=journalctl --no-pager -g error _uses_shell=False expand_argument_vars=True stdin_add_newline=True strip_empty_ends=True argv=None chdir=None executable=None creates=None removes=None stdin=None
+Jun 28 12:26:50 clienterhel10.s2linux.local python3[120435]: ansible-ansible.builtin.slurp Invoked with src=/sys/class/net/enp1s0/statistics/rx_errors
+Jun 28 12:26:50 clienterhel10.s2linux.local python3[120591]: ansible-ansible.builtin.slurp Invoked with src=/sys/class/net/enp1s0/statistics/tx_errors
+Jun 28 12:27:19 clienterhel10.s2linux.local python3[123542]: ansible-ansible.legacy.command Invoked with _raw_params=grep -i error /var/log/secure /var/log/messages _uses_shell=False expand_argument_vars=True stdin_add_newline=True strip_empty_ends=True argv=None chdir=None executable=None creates=None removes=None stdin=None
+Jun 28 12:27:20 clienterhel10.s2linux.local python3[123699]: ansible-ansible.legacy.command Invoked with _raw_params=journalctl --no-pager -g error _uses_shell=False expand_argument_vars=True stdin_add_newline=True strip_empty_ends=True argv=None chdir=None executable=None creates=None removes=None stdin=None
+Jun 28 12:34:19 clienterhel10.s2linux.local python3[130124]: ansible-ansible.builtin.slurp Invoked with src=/sys/class/net/enp1s0/statistics/rx_errors
+Jun 28 12:34:20 clienterhel10.s2linux.local python3[130280]: ansible-ansible.builtin.slurp Invoked with src=/sys/class/net/enp1s0/statistics/tx_errors
+Jun 28 12:34:47 clienterhel10.s2linux.local python3[132930]: ansible-ansible.legacy.command Invoked with _raw_params=grep -i error /var/log/secure /var/log/messages _uses_shell=False expand_argument_vars=True stdin_add_newline=True strip_empty_ends=True argv=None chdir=None executable=None creates=None removes=None stdin=None
+Jun 28 12:34:47 clienterhel10.s2linux.local python3[133087]: ansible-ansible.legacy.command Invoked with _raw_params=journalctl --no-pager -g error _uses_shell=False expand_argument_vars=True stdin_add_newline=True strip_empty_ends=True argv=None chdir=None executable=None creates=None removes=None stdin=None
+Jun 28 15:09:23 clienterhel10.s2linux.local python3[140172]: ansible-ansible.builtin.slurp Invoked with src=/sys/class/net/enp1s0/statistics/rx_errors
+Jun 28 15:09:23 clienterhel10.s2linux.local python3[140328]: ansible-ansible.builtin.slurp Invoked with src=/sys/class/net/enp1s0/statistics/tx_errors
+Jun 28 15:09:51 clienterhel10.s2linux.local python3[142978]: ansible-ansible.legacy.command Invoked with _raw_params=grep -i error /var/log/secure /var/log/messages _uses_shell=False expand_argument_vars=True stdin_add_newline=True strip_empty_ends=True argv=None chdir=None executable=None creates=None removes=None stdin=None
+Jun 28 15:09:51 clienterhel10.s2linux.local python3[143135]: ansible-ansible.legacy.command Invoked with _raw_params=journalctl --no-pager -g error _uses_shell=False expand_argument_vars=True stdin_add_newline=True strip_empty_ends=True argv=None chdir=None executable=None creates=None removes=None stdin=None
+Jun 28 15:33:02 clienterhel10.s2linux.local python3[149682]: ansible-ansible.builtin.slurp Invoked with src=/sys/class/net/enp1s0/statistics/rx_errors
+Jun 28 15:33:02 clienterhel10.s2linux.local python3[149838]: ansible-ansible.builtin.slurp Invoked with src=/sys/class/net/enp1s0/statistics/tx_errors
+Jun 28 15:33:30 clienterhel10.s2linux.local python3[152489]: ansible-ansible.legacy.command Invoked with _raw_params=grep -i error /var/log/secure /var/log/messages _uses_shell=False expand_argument_vars=True stdin_add_newline=True strip_empty_ends=True argv=None chdir=None executable=None creates=None removes=None stdin=None
+Jun 28 15:33:31 clienterhel10.s2linux.local python3[152646]: ansible-ansible.legacy.command Invoked with _raw_params=journalctl --no-pager -g error _uses_shell=False expand_argument_vars=True stdin_add_newline=True strip_empty_ends=True argv=None chdir=None executable=None creates=None removes=None stdin=None
+Jun 28 15:36:37 clienterhel10.s2linux.local python3[165799]: ansible-ansible.builtin.slurp Invoked with src=/sys/class/net/enp1s0/statistics/rx_errors
+Jun 28 15:36:37 clienterhel10.s2linux.local python3[165955]: ansible-ansible.builtin.slurp Invoked with src=/sys/class/net/enp1s0/statistics/tx_errors
+Jun 28 15:37:05 clienterhel10.s2linux.local python3[168607]: ansible-ansible.legacy.command Invoked with _raw_params=grep -i error /var/log/secure /var/log/messages _uses_shell=False expand_argument_vars=True stdin_add_newline=True strip_empty_ends=True argv=None chdir=None executable=None creates=None removes=None stdin=None
+Jun 28 15:37:06 clienterhel10.s2linux.local python3[168764]: ansible-ansible.legacy.command Invoked with _raw_params=journalctl --no-pager -g error _uses_shell=False expand_argument_vars=True stdin_add_newline=True strip_empty_ends=True argv=None chdir=None executable=None creates=None removes=None stdin=None
+Jun 28 15:38:56 clienterhel10.s2linux.local python3[175147]: ansible-ansible.builtin.slurp Invoked with src=/sys/class/net/enp1s0/statistics/rx_errors
+Jun 28 15:38:56 clienterhel10.s2linux.local python3[175303]: ansible-ansible.builtin.slurp Invoked with src=/sys/class/net/enp1s0/statistics/tx_errors
+Jun 28 15:39:26 clienterhel10.s2linux.local python3[177955]: ansible-ansible.legacy.command Invoked with _raw_params=grep -i error /var/log/secure /var/log/messages _uses_shell=False expand_argument_vars=True stdin_add_newline=True strip_empty_ends=True argv=None chdir=None executable=None creates=None removes=None stdin=None
+Jun 28 15:39:26 clienterhel10.s2linux.local python3[178112]: ansible-ansible.legacy.command Invoked with _raw_params=journalctl --no-pager -g error _uses_shell=False expand_argument_vars=True stdin_add_newline=True strip_empty_ends=True argv=None chdir=None executable=None creates=None removes=None stdin=None
+Jun 28 15:41:16 clienterhel10.s2linux.local python3[184495]: ansible-ansible.builtin.slurp Invoked with src=/sys/class/net/enp1s0/statistics/rx_errors
+Jun 28 15:41:17 clienterhel10.s2linux.local python3[184651]: ansible-ansible.builtin.slurp Invoked with src=/sys/class/net/enp1s0/statistics/tx_errors
+Jun 28 15:41:45 clienterhel10.s2linux.local python3[187301]: ansible-ansible.legacy.command Invoked with _raw_params=grep -i error /var/log/secure /var/log/messages _uses_shell=False expand_argument_vars=True stdin_add_newline=True strip_empty_ends=True argv=None chdir=None executable=None creates=None removes=None stdin=None
+Jun 28 15:41:45 clienterhel10.s2linux.local python3[187458]: ansible-ansible.legacy.command Invoked with _raw_params=journalctl --no-pager -g error _uses_shell=False expand_argument_vars=True stdin_add_newline=True strip_empty_ends=True argv=None chdir=None executable=None creates=None removes=None stdin=None
+Jun 28 15:51:11 clienterhel10.s2linux.local python3[193893]: ansible-ansible.builtin.slurp Invoked with src=/sys/class/net/enp1s0/statistics/rx_errors
+Jun 28 15:51:11 clienterhel10.s2linux.local python3[194049]: ansible-ansible.builtin.slurp Invoked with src=/sys/class/net/enp1s0/statistics/tx_errors
+Jun 28 15:51:39 clienterhel10.s2linux.local python3[196699]: ansible-ansible.legacy.command Invoked with _raw_params=grep -i error /var/log/secure /var/log/messages _uses_shell=False expand_argument_vars=True stdin_add_newline=True strip_empty_ends=True argv=None chdir=None executable=None creates=None removes=None stdin=None
+Jun 28 15:51:39 clienterhel10.s2linux.local python3[196856]: ansible-ansible.legacy.command Invoked with _raw_params=journalctl --no-pager -g error _uses_shell=False expand_argument_vars=True stdin_add_newline=True strip_empty_ends=True argv=None chdir=None executable=None creates=None removes=None stdin=None
+Jun 28 16:11:16 clienterhel10.s2linux.local python3[203334]: ansible-ansible.builtin.slurp Invoked with src=/sys/class/net/enp1s0/statistics/rx_errors
+Jun 28 16:11:17 clienterhel10.s2linux.local python3[203490]: ansible-ansible.builtin.slurp Invoked with src=/sys/class/net/enp1s0/statistics/tx_errors
+Jun 28 16:11:44 clienterhel10.s2linux.local python3[206140]: ansible-ansible.legacy.command Invoked with _raw_params=grep -i error /var/log/secure /var/log/messages _uses_shell=False expand_argument_vars=True stdin_add_newline=True strip_empty_ends=True argv=None chdir=None executable=None creates=None removes=None stdin=None
+Jun 28 16:11:44 clienterhel10.s2linux.local python3[206297]: ansible-ansible.legacy.command Invoked with _raw_params=journalctl --no-pager -g error _uses_shell=False expand_argument_vars=True stdin_add_newline=True strip_empty_ends=True argv=None chdir=None executable=None creates=None removes=None stdin=None
+Jun 28 16:27:05 clienterhel10.s2linux.local python3[212753]: ansible-ansible.builtin.slurp Invoked with src=/sys/class/net/enp1s0/statistics/rx_errors
+Jun 28 16:27:05 clienterhel10.s2linux.local python3[212909]: ansible-ansible.builtin.slurp Invoked with src=/sys/class/net/enp1s0/statistics/tx_errors
+Jun 28 16:27:32 clienterhel10.s2linux.local python3[215559]: ansible-ansible.legacy.command Invoked with _raw_params=grep -i error /var/log/secure /var/log/messages _uses_shell=False expand_argument_vars=True stdin_add_newline=True strip_empty_ends=True argv=None chdir=None executable=None creates=None removes=None stdin=None
+Jun 28 16:27:33 clienterhel10.s2linux.local python3[215716]: ansible-ansible.legacy.command Invoked with _raw_params=journalctl --no-pager -g error _uses_shell=False expand_argument_vars=True stdin_add_newline=True strip_empty_ends=True argv=None chdir=None executable=None creates=None removes=None stdin=None
+Jun 28 16:30:48 clienterhel10.s2linux.local python3[222716]: ansible-ansible.builtin.slurp Invoked with src=/sys/class/net/enp1s0/statistics/rx_errors
+Jun 28 16:30:48 clienterhel10.s2linux.local python3[222872]: ansible-ansible.builtin.slurp Invoked with src=/sys/class/net/enp1s0/statistics/tx_errors
+Jun 28 16:31:16 clienterhel10.s2linux.local python3[225524]: ansible-ansible.legacy.command Invoked with _raw_params=grep -i error /var/log/secure /var/log/messages _uses_shell=False expand_argument_vars=True stdin_add_newline=True strip_empty_ends=True argv=None chdir=None executable=None creates=None removes=None stdin=None
+Jun 28 16:31:17 clienterhel10.s2linux.local python3[225681]: ansible-ansible.legacy.command Invoked with _raw_params=journalctl --no-pager -g error _uses_shell=False expand_argument_vars=True stdin_add_newline=True strip_empty_ends=True argv=None chdir=None executable=None creates=None removes=None stdin=None
+Jun 28 16:34:54 clienterhel10.s2linux.local python3[232252]: ansible-ansible.builtin.slurp Invoked with src=/sys/class/net/enp1s0/statistics/rx_errors
+Jun 28 16:34:54 clienterhel10.s2linux.local python3[232408]: ansible-ansible.builtin.slurp Invoked with src=/sys/class/net/enp1s0/statistics/tx_errors
+Jun 28 16:35:22 clienterhel10.s2linux.local python3[235061]: ansible-ansible.legacy.command Invoked with _raw_params=grep -i error /var/log/secure /var/log/messages _uses_shell=False expand_argument_vars=True stdin_add_newline=True strip_empty_ends=True argv=None chdir=None executable=None creates=None removes=None stdin=None
+Jun 28 16:35:22 clienterhel10.s2linux.local python3[235218]: ansible-ansible.legacy.command Invoked with _raw_params=journalctl --no-pager -g error _uses_shell=False expand_argument_vars=True stdin_add_newline=True strip_empty_ends=True argv=None chdir=None executable=None creates=None removes=None stdin=None
+Jun 28 16:39:34 clienterhel10.s2linux.local python3[241789]: ansible-ansible.builtin.slurp Invoked with src=/sys/class/net/enp1s0/statistics/rx_errors
+Jun 28 16:39:34 clienterhel10.s2linux.local python3[241945]: ansible-ansible.builtin.slurp Invoked with src=/sys/class/net/enp1s0/statistics/tx_errors
+Jun 28 16:40:08 clienterhel10.s2linux.local python3[244600]: ansible-ansible.legacy.command Invoked with _raw_params=grep -i error /var/log/secure /var/log/messages _uses_shell=False expand_argument_vars=True stdin_add_newline=True strip_empty_ends=True argv=None chdir=None executable=None creates=None removes=None stdin=None
+Jun 28 16:40:08 clienterhel10.s2linux.local python3[244757]: ansible-ansible.legacy.command Invoked with _raw_params=journalctl --no-pager -g error _uses_shell=False expand_argument_vars=True stdin_add_newline=True strip_empty_ends=True argv=None chdir=None executable=None creates=None removes=None stdin=None
+Jun 28 16:46:23 clienterhel10.s2linux.local python3[251337]: ansible-ansible.builtin.slurp Invoked with src=/sys/class/net/enp1s0/statistics/rx_errors
+Jun 28 16:46:23 clienterhel10.s2linux.local python3[251493]: ansible-ansible.builtin.slurp Invoked with src=/sys/class/net/enp1s0/statistics/tx_errors
+Jun 28 16:46:51 clienterhel10.s2linux.local python3[254143]: ansible-ansible.legacy.command Invoked with _raw_params=grep -i error /var/log/secure /var/log/messages _uses_shell=False expand_argument_vars=True stdin_add_newline=True strip_empty_ends=True argv=None chdir=None executable=None creates=None removes=None stdin=None
+Jun 28 16:46:51 clienterhel10.s2linux.local python3[254300]: ansible-ansible.legacy.command Invoked with _raw_params=journalctl --no-pager -g error _uses_shell=False expand_argument_vars=True stdin_add_newline=True strip_empty_ends=True argv=None chdir=None executable=None creates=None removes=None stdin=None

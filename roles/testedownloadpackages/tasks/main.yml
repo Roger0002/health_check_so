@@ -2,7 +2,7 @@
 - name: Testa se é possível realizar o download de pacotes
   block:
     - name: Assegura que o yum-utils esteja instalado
-      ansible.builtin.dnf:
+      ansible.builtin.yum:
         name: yum-utils
         state: present
         validate_certs: false

@@ -45,7 +45,7 @@
         name: sssd
 
     - name: Garante a existência do pacote sssd-tools
-      ansible.builtin.dnf:
+      ansible.builtin.yum:
         name: sssd-tools
         state: present
 

@@ -2,7 +2,7 @@
 - name: Bloco do teste de resolução externa
   block:
     - name: Valida presença do pacote bind-utils
-      ansible.builtin.dnf:
+      ansible.builtin.yum:
         name: bind-utils
         state: present
 

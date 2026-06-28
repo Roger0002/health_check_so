@@ -2,7 +2,7 @@
 - name: Bloco do teste de falhas de segurança presentes
   block:
     - name: Listar pacotes disponíveis para atualização
-      ansible.builtin.shell: dnf updateinfo list updates security
+      ansible.builtin.shell: yum updateinfo list updates security
       register: security_available_output
 
     - name: Testa se há errata de security disponíveis para aplicar

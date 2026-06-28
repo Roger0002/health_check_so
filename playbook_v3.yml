@@ -4,7 +4,11 @@
 # Desenvolvido por Roger Príncipe (rprincip@redhat.com)
 
 - name: RHEL Health Check
-  hosts: clienterhel10.s2linux.local, clienterhel9.s2linux.local
+  hosts:
+    - clienterhel7.s2linux.local
+    - clienterhel8.s2linux.local
+    - clienterhel9.s2linux.local
+    - clienterhel10.s2linux.local
   gather_facts: true
   vars:
     ansible_password: 12345678
@@ -21,7 +25,7 @@
         - miscelanea-geral
         - acesso-conteudo-geral
         - logging-geral
-
+        - coleta-geral
       ansible.builtin.service_facts:
 
     # TESTES DE AUTENTICAÇÃO
@@ -44,7 +48,7 @@
         name: teste_sssd
 
     # TESTES DE ACESSO A CONTEÚDO
-    - name: Verifica se os repositórios padrão estão ativos\
+    - name: Verifica se os repositórios padrão estão ativos
       tags:
         - acesso-conteudo-geral
       ansible.builtin.import_role:
@@ -155,7 +159,6 @@
       ansible.builtin.import_role:
         name: testebackupmetadados
 
-
     # TESTES - MISCELÂNEA
     - name: Verifica a coleta do sysstat
       tags:
@@ -187,6 +190,59 @@
       ansible.builtin.import_role:
         name: testekdump
 
+    # INICIO DAS COLETAS ADICIONAIS
+    - name: Faz o coleta de registros com \"error\" nos logs secure e messages
+      tags:
+        - coleta-geral
+      ansible.builtin.command: grep -i error /var/log/secure /var/log/messages
+      failed_when: false
+      changed_when: false
+      register: saida_errologs
+
+    - name: Faz a coleta de registros com \"error\" no journal
+      tags:
+        - coleta-geral
+      ansible.builtin.command: journalctl --no-pager -g error
+      failed_when: false
+      changed_when: false
+      register: saida_errojournal
+
+    - name: Faz a coleta do perfil do tuned (caso ele esteja em execução)
+      tags:
+        - coleta-geral
+      when: ansible_facts['services']['tuned.service'] is defined
+      ansible.builtin.command: tuned-adm active
+      failed_when: false
+      changed_when: false
+      register: saida_perfiltuned
+
+    - name: Faz a coleta do uptime da máquina + load average
+      tags:
+        - coleta-geral
+      ansible.builtin.command: uptime
+      failed_when: false
+      changed_when: false
+      register: saida_uptime
+
+    - name: Coleta do consumo de banda nas interfaces
+      tags:
+        - coleta-geral
+      block:
+        - name: Copia o script para a máquina
+          ansible.builtin.copy:
+            src: script_measure_bandwidth.sh
+            dest: /tmp
+
+        - name: Executa o script, capturando sua saída
+          ansible.builtin.command: bash /tmp/script_measure_bandwidth.sh
+          failed_when: false
+          changed_when: false
+          register: saida_script_consumo_interfaces
+
+        - name: Remove o script
+          ansible.builtin.file:
+            path: /tmp/script_measure_bandwidth.sh
+            state: absent
 
     # ÍNICIO DO AGRUPAMENTO DAS INFORMAÇÕES PARA EXIBIÇÃO
     - name: Resumo dos testes de autenticação
@@ -264,6 +320,25 @@
           Situação do /usr: {{ teste_usrnaoapartado | default("") }}
           Situação do kdump: {{ teste_kdump | default("") }}
 
+    - name: Informações gerais (coleta)
+      tags:
+        - coleta-geral
+      ansible.builtin.set_fact:
+        coletas: |
+          *** UPTIME + LOAD AVERAGE ***
+          {{ saida_uptime.stdout }}
+          
+          *** SITUAÇÃO DO PERFIL DO TUNED ***
+          {{ saida_perfiltuned.stdout | default("Sem tuned ativo") }}
+          
+          *** CONSUMO DE BANDA NAS INTERFACES ***
+          {{ saida_script_consumo_interfaces.stdout }}
+          
+          *** PRESENÇA DA STRING 'ERROR' NOS PRINCIPAIS LOGS ***
+          {{ saida_errologs.stdout }}
+          {{ saida_errojournal.stdout }}
+
+
     - name: Insere as informações no relatório
       tags:
         - always
@@ -278,6 +353,7 @@
           {{ status_geral_rede | default("") }}
           {{ status_geral_lvm | default("") }}
           {{ status_geral_miscelanea | default("") }}
+          {{ coletas }}
 
     - name: Traz o relatório
       tags:

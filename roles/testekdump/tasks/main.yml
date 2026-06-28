@@ -1,6 +1,11 @@
 ---
 - name: Bloco do teste do kdump
   block:
+    - name: Condena esse item caso seja um RHEL 7
+      when: ansible_facts['distribution_major_version'] == '7'
+      ansible.builtin.fail:
+        msg: Máquina RHEL 7, impossível determinar alguns dos testes
+
     - name: Testa se o kdump está no ar e habilitado no boot
       ansible.builtin.assert:
         that: ansible_facts['services']['kdump.service']['status'] == 'enabled'
@@ -24,6 +29,13 @@
 
   rescue:
     - name: Considera NOK para o relatório final
+      when: ansible_facts['distribution_major_version'] != '7'
       ansible.builtin.set_fact:
         teste_kdump: FAIL
+
+    - name: Anula o teste caso o RHEL seja 7
+      when: ansible_facts['distribution_major_version'] == '7'
+      ansible.builtin.set_fact:
+        teste_kdump: N/A
+
 ...

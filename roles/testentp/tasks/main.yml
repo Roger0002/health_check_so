@@ -1,9 +1,6 @@
 ---
 - name: Bloco do NTP
   block:
-    - name: Coleta os facts de serviços
-      ansible.builtin.service_facts:
-
     - name: Testa se o daemon do chronyd está no ar e habilitado no boot
       ansible.builtin.assert:
         that:

@@ -2,7 +2,7 @@
 - name: Bloco do teste de bugs presentes
   block:
     - name: Listar pacotes disponíveis para atualização
-      ansible.builtin.shell: dnf updateinfo list updates bugfix
+      ansible.builtin.shell: yum updateinfo list updates bugfix
       register: bugfix_available_output
 
     - name: Testa se há errata de bugfix disponíveis para aplicar
