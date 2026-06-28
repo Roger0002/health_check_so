@@ -3,14 +3,7 @@ Situação do nsswitch: OK
 Situação da conectividade com o LDAP: OK
 Situação do daemon do sssd: OK
 
-*** ACESSO A CONTEÚDO ***
-Situação dos repositórios padrão: OK
-Situação de download de pacotes: OK
-Situação do registro no insights: OK
 
-*** LOGGING ***
-Situação do daemon do rsyslog: OK
-Situação de escrita nos logs: OK
 
 *** SEGURANÇA ***
 Situação de bugs: OK
@@ -20,92 +13,6 @@ Situação do SElinux: OK
 Situação das violações de SElinux: OK
 Situação do firewalld: OK
 
-*** REDE ***
-Situação da resolução externa de DNS: OK
-Situação do hostname em /etc/hosts: OK
-Situação do incremento de pacotes com erro: OK
-Situação do sincronismo com fontes NTP: OK
 
-*** LVM ***
-Situação dos metadados dos VGs: OK
-Situação de erros no comando pvs: OK
-Situação do backup de metadados: OK
 
-*** MISCELANEA ***
-Situação da coleta de consumo de recursos: FAIL
-Situação da integridade da base RPM: OK
-Situação da necessidade de reboot: OK
-Situação do /usr: OK
-Situação do kdump: N/A
 
-*** UPTIME + LOAD AVERAGE ***
- 16:46:52 up 17 min,  1 user,  load average: 0.11, 0.10, 0.07
-
-*** SITUAÇÃO DO PERFIL DO TUNED ***
-Current active profile: virtual-guest
-
-*** CONSUMO DE BANDA NAS INTERFACES ***
-Interface eth0:
-TX: 0 mbps
-RX: 0 mbps
-
-*** PRESENÇA DA STRING 'ERROR' NOS PRINCIPAIS LOGS ***
-/var/log/messages:Jun 28 15:09:22 clienterhel7 ansible-ansible.builtin.slurp: Invoked with src=/sys/class/net/eth0/statistics/rx_errors
-/var/log/messages:Jun 28 15:09:22 clienterhel7 ansible-ansible.builtin.slurp: Invoked with src=/sys/class/net/eth0/statistics/tx_errors
-/var/log/messages:Jun 28 15:09:47 clienterhel7 ansible-ansible.legacy.command: Error Executing CMD:needs-restarting -r Exception:[Errno 2] No such file or directory
-/var/log/messages:Jun 28 15:09:50 clienterhel7 ansible-ansible.legacy.command: Invoked with executable=None _uses_shell=False expand_argument_vars=True strip_empty_ends=True _raw_params=grep -i error /var/log/secure /var/log/messages removes=None argv=None creates=None chdir=None stdin_add_newline=True stdin=None
-/var/log/messages:Jun 28 15:09:50 clienterhel7 ansible-ansible.legacy.command: Invoked with executable=None _uses_shell=False expand_argument_vars=True strip_empty_ends=True _raw_params=journalctl --no-pager -g error removes=None argv=None creates=None chdir=None stdin_add_newline=True stdin=None
-/var/log/messages:Jun 28 15:10:50 clienterhel7 ansible-ansible.builtin.slurp: Invoked with src=/sys/class/net/eth0/statistics/rx_errors
-/var/log/messages:Jun 28 15:10:50 clienterhel7 ansible-ansible.builtin.slurp: Invoked with src=/sys/class/net/eth0/statistics/tx_errors
-/var/log/messages:Jun 28 15:10:53 clienterhel7 ansible-ansible.legacy.command: Error Executing CMD:needs-restarting -r Exception:[Errno 2] No such file or directory
-/var/log/messages:Jun 28 15:10:53 clienterhel7 ansible-ansible.legacy.command: Invoked with executable=None _uses_shell=False expand_argument_vars=True strip_empty_ends=True _raw_params=grep -i error /var/log/secure /var/log/messages removes=None argv=None creates=None chdir=None stdin_add_newline=True stdin=None
-/var/log/messages:Jun 28 15:10:53 clienterhel7 ansible-ansible.legacy.command: Invoked with executable=None _uses_shell=False expand_argument_vars=True strip_empty_ends=True _raw_params=journalctl --no-pager -g error removes=None argv=None creates=None chdir=None stdin_add_newline=True stdin=None
-/var/log/messages:Jun 28 15:20:06 clienterhel7 ansible-ansible.builtin.slurp: Invoked with src=/sys/class/net/eth0/statistics/rx_errors
-/var/log/messages:Jun 28 15:20:06 clienterhel7 ansible-ansible.builtin.slurp: Invoked with src=/sys/class/net/eth0/statistics/tx_errors
-/var/log/messages:Jun 28 15:20:08 clienterhel7 ansible-ansible.legacy.command: Error Executing CMD:needs-restarting -r Exception:[Errno 2] No such file or directory
-/var/log/messages:Jun 28 15:20:08 clienterhel7 ansible-ansible.legacy.command: Invoked with executable=None _uses_shell=False expand_argument_vars=True strip_empty_ends=True _raw_params=grep -i error /var/log/secure /var/log/messages removes=None argv=None creates=None chdir=None stdin_add_newline=True stdin=None
-/var/log/messages:Jun 28 15:20:09 clienterhel7 ansible-ansible.legacy.command: Invoked with executable=None _uses_shell=False expand_argument_vars=True strip_empty_ends=True _raw_params=journalctl --no-pager -g error removes=None argv=None creates=None chdir=None stdin_add_newline=True stdin=None
-/var/log/messages:Jun 28 15:33:01 clienterhel7 ansible-ansible.builtin.slurp: Invoked with src=/sys/class/net/eth0/statistics/rx_errors
-/var/log/messages:Jun 28 15:33:01 clienterhel7 ansible-ansible.builtin.slurp: Invoked with src=/sys/class/net/eth0/statistics/tx_errors
-/var/log/messages:Jun 28 15:33:30 clienterhel7 ansible-ansible.legacy.command: Invoked with executable=None _uses_shell=False expand_argument_vars=True strip_empty_ends=True _raw_params=grep -i error /var/log/secure /var/log/messages removes=None argv=None creates=None chdir=None stdin_add_newline=True stdin=None
-/var/log/messages:Jun 28 15:33:30 clienterhel7 ansible-ansible.legacy.command: Invoked with executable=None _uses_shell=False expand_argument_vars=True strip_empty_ends=True _raw_params=journalctl --no-pager -g error removes=None argv=None creates=None chdir=None stdin_add_newline=True stdin=None
-/var/log/messages:Jun 28 15:36:36 clienterhel7 ansible-ansible.builtin.slurp: Invoked with src=/sys/class/net/eth0/statistics/rx_errors
-/var/log/messages:Jun 28 15:36:36 clienterhel7 ansible-ansible.builtin.slurp: Invoked with src=/sys/class/net/eth0/statistics/tx_errors
-/var/log/messages:Jun 28 15:37:05 clienterhel7 ansible-ansible.legacy.command: Invoked with executable=None _uses_shell=False expand_argument_vars=True strip_empty_ends=True _raw_params=grep -i error /var/log/secure /var/log/messages removes=None argv=None creates=None chdir=None stdin_add_newline=True stdin=None
-/var/log/messages:Jun 28 15:37:05 clienterhel7 ansible-ansible.legacy.command: Invoked with executable=None _uses_shell=False expand_argument_vars=True strip_empty_ends=True _raw_params=journalctl --no-pager -g error removes=None argv=None creates=None chdir=None stdin_add_newline=True stdin=None
-/var/log/messages:Jun 28 15:38:55 clienterhel7 ansible-ansible.builtin.slurp: Invoked with src=/sys/class/net/eth0/statistics/rx_errors
-/var/log/messages:Jun 28 15:38:55 clienterhel7 ansible-ansible.builtin.slurp: Invoked with src=/sys/class/net/eth0/statistics/tx_errors
-/var/log/messages:Jun 28 15:39:25 clienterhel7 ansible-ansible.legacy.command: Invoked with executable=None _uses_shell=False expand_argument_vars=True strip_empty_ends=True _raw_params=grep -i error /var/log/secure /var/log/messages removes=None argv=None creates=None chdir=None stdin_add_newline=True stdin=None
-/var/log/messages:Jun 28 15:39:25 clienterhel7 ansible-ansible.legacy.command: Invoked with executable=None _uses_shell=False expand_argument_vars=True strip_empty_ends=True _raw_params=journalctl --no-pager -g error removes=None argv=None creates=None chdir=None stdin_add_newline=True stdin=None
-/var/log/messages:Jun 28 15:41:15 clienterhel7 ansible-ansible.builtin.slurp: Invoked with src=/sys/class/net/eth0/statistics/rx_errors
-/var/log/messages:Jun 28 15:41:15 clienterhel7 ansible-ansible.builtin.slurp: Invoked with src=/sys/class/net/eth0/statistics/tx_errors
-/var/log/messages:Jun 28 15:41:44 clienterhel7 ansible-ansible.legacy.command: Invoked with executable=None _uses_shell=False expand_argument_vars=True strip_empty_ends=True _raw_params=grep -i error /var/log/secure /var/log/messages removes=None argv=None creates=None chdir=None stdin_add_newline=True stdin=None
-/var/log/messages:Jun 28 15:41:45 clienterhel7 ansible-ansible.legacy.command: Invoked with executable=None _uses_shell=False expand_argument_vars=True strip_empty_ends=True _raw_params=journalctl --no-pager -g error removes=None argv=None creates=None chdir=None stdin_add_newline=True stdin=None
-/var/log/messages:Jun 28 15:51:09 clienterhel7 ansible-ansible.builtin.slurp: Invoked with src=/sys/class/net/eth0/statistics/rx_errors
-/var/log/messages:Jun 28 15:51:10 clienterhel7 ansible-ansible.builtin.slurp: Invoked with src=/sys/class/net/eth0/statistics/tx_errors
-/var/log/messages:Jun 28 15:51:38 clienterhel7 ansible-ansible.legacy.command: Invoked with executable=None _uses_shell=False expand_argument_vars=True strip_empty_ends=True _raw_params=grep -i error /var/log/secure /var/log/messages removes=None argv=None creates=None chdir=None stdin_add_newline=True stdin=None
-/var/log/messages:Jun 28 15:51:38 clienterhel7 ansible-ansible.legacy.command: Invoked with executable=None _uses_shell=False expand_argument_vars=True strip_empty_ends=True _raw_params=journalctl --no-pager -g error removes=None argv=None creates=None chdir=None stdin_add_newline=True stdin=None
-/var/log/messages:Jun 28 16:11:15 clienterhel7 ansible-ansible.builtin.slurp: Invoked with src=/sys/class/net/eth0/statistics/rx_errors
-/var/log/messages:Jun 28 16:11:15 clienterhel7 ansible-ansible.builtin.slurp: Invoked with src=/sys/class/net/eth0/statistics/tx_errors
-/var/log/messages:Jun 28 16:11:43 clienterhel7 ansible-ansible.legacy.command: Invoked with executable=None _uses_shell=False expand_argument_vars=True strip_empty_ends=True _raw_params=grep -i error /var/log/secure /var/log/messages removes=None argv=None creates=None chdir=None stdin_add_newline=True stdin=None
-/var/log/messages:Jun 28 16:11:44 clienterhel7 ansible-ansible.legacy.command: Invoked with executable=None _uses_shell=False expand_argument_vars=True strip_empty_ends=True _raw_params=journalctl --no-pager -g error removes=None argv=None creates=None chdir=None stdin_add_newline=True stdin=None
-/var/log/messages:Jun 28 16:27:04 clienterhel7 ansible-ansible.builtin.slurp: Invoked with src=/sys/class/net/eth0/statistics/rx_errors
-/var/log/messages:Jun 28 16:27:04 clienterhel7 ansible-ansible.builtin.slurp: Invoked with src=/sys/class/net/eth0/statistics/tx_errors
-/var/log/messages:Jun 28 16:27:32 clienterhel7 ansible-ansible.legacy.command: Invoked with executable=None _uses_shell=False expand_argument_vars=True strip_empty_ends=True _raw_params=grep -i error /var/log/secure /var/log/messages removes=None argv=None creates=None chdir=None stdin_add_newline=True stdin=None
-/var/log/messages:Jun 28 16:27:32 clienterhel7 ansible-ansible.legacy.command: Invoked with executable=None _uses_shell=False expand_argument_vars=True strip_empty_ends=True _raw_params=journalctl --no-pager -g error removes=None argv=None creates=None chdir=None stdin_add_newline=True stdin=None
-/var/log/messages:Jun 28 16:29:45 clienterhel7 kernel: BERT: Boot Error Record Table support is disabled. Enable it by using bert_enable as kernel parameter.
-/var/log/messages:Jun 28 16:30:47 clienterhel7 ansible-ansible.builtin.slurp: Invoked with src=/sys/class/net/eth0/statistics/rx_errors
-/var/log/messages:Jun 28 16:30:47 clienterhel7 ansible-ansible.builtin.slurp: Invoked with src=/sys/class/net/eth0/statistics/tx_errors
-/var/log/messages:Jun 28 16:31:16 clienterhel7 ansible-ansible.legacy.command: Invoked with executable=None _uses_shell=False expand_argument_vars=True strip_empty_ends=True _raw_params=grep -i error /var/log/secure /var/log/messages removes=None argv=None creates=None chdir=None stdin_add_newline=True stdin=None
-/var/log/messages:Jun 28 16:31:16 clienterhel7 ansible-ansible.legacy.command: Invoked with executable=None _uses_shell=False expand_argument_vars=True strip_empty_ends=True _raw_params=journalctl --no-pager -g error removes=None argv=None creates=None chdir=None stdin_add_newline=True stdin=None
-/var/log/messages:Jun 28 16:34:53 clienterhel7 ansible-ansible.builtin.slurp: Invoked with src=/sys/class/net/eth0/statistics/rx_errors
-/var/log/messages:Jun 28 16:34:53 clienterhel7 ansible-ansible.builtin.slurp: Invoked with src=/sys/class/net/eth0/statistics/tx_errors
-/var/log/messages:Jun 28 16:35:21 clienterhel7 ansible-ansible.legacy.command: Invoked with executable=None _uses_shell=False expand_argument_vars=True strip_empty_ends=True _raw_params=grep -i error /var/log/secure /var/log/messages removes=None argv=None creates=None chdir=None stdin_add_newline=True stdin=None
-/var/log/messages:Jun 28 16:35:21 clienterhel7 ansible-ansible.legacy.command: Invoked with executable=None _uses_shell=False expand_argument_vars=True strip_empty_ends=True _raw_params=journalctl --no-pager -g error removes=None argv=None creates=None chdir=None stdin_add_newline=True stdin=None
-/var/log/messages:Jun 28 16:39:33 clienterhel7 ansible-ansible.builtin.slurp: Invoked with src=/sys/class/net/eth0/statistics/rx_errors
-/var/log/messages:Jun 28 16:39:34 clienterhel7 ansible-ansible.builtin.slurp: Invoked with src=/sys/class/net/eth0/statistics/tx_errors
-/var/log/messages:Jun 28 16:40:08 clienterhel7 ansible-ansible.legacy.command: Invoked with executable=None _uses_shell=False expand_argument_vars=True strip_empty_ends=True _raw_params=grep -i error /var/log/secure /var/log/messages removes=None argv=None creates=None chdir=None stdin_add_newline=True stdin=None
-/var/log/messages:Jun 28 16:40:08 clienterhel7 ansible-ansible.legacy.command: Invoked with executable=None _uses_shell=False expand_argument_vars=True strip_empty_ends=True _raw_params=journalctl --no-pager -g error removes=None argv=None creates=None chdir=None stdin_add_newline=True stdin=None
-/var/log/messages:Jun 28 16:46:22 clienterhel7 ansible-ansible.builtin.slurp: Invoked with src=/sys/class/net/eth0/statistics/rx_errors
-/var/log/messages:Jun 28 16:46:22 clienterhel7 ansible-ansible.builtin.slurp: Invoked with src=/sys/class/net/eth0/statistics/tx_errors
-/var/log/messages:Jun 28 16:46:50 clienterhel7 ansible-ansible.legacy.command: Invoked with executable=None _uses_shell=False expand_argument_vars=True strip_empty_ends=True _raw_params=grep -i error /var/log/secure /var/log/messages removes=None argv=None creates=None chdir=None stdin_add_newline=True stdin=None

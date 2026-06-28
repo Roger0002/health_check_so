@@ -353,7 +353,7 @@
           {{ status_geral_rede | default("") }}
           {{ status_geral_lvm | default("") }}
           {{ status_geral_miscelanea | default("") }}
-          {{ coletas }}
+          {{ coletas | default("") }}
 
     - name: Traz o relatório
       tags:
