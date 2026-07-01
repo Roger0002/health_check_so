@@ -4,14 +4,9 @@
 # Desenvolvido por Roger Príncipe (rprincip@redhat.com)
 
 - name: RHEL Health Check
-  hosts:
-    - clienterhel7.s2linux.local
-    - clienterhel8.s2linux.local
-    - clienterhel9.s2linux.local
-    - clienterhel10.s2linux.local
+  hosts: all
   gather_facts: true
   vars:
-    ansible_password: 12345678
     arquivo_relatorio: relatorio_{{ inventory_hostname }}.txt
 
   tasks:
