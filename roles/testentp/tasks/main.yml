@@ -28,7 +28,7 @@
 
     - name: Testa as fontes
       loop: "{{ lista_fontes }}"
-      ansible.builtin.command: chronyd -Q "server {{ item }} iburst"
+      ansible.builtin.command: chronyd -t 10 -Q "server {{ item }} iburst"
 
     - name: Considera OK para o relatório final
       ansible.builtin.set_fact:
