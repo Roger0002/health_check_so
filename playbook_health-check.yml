@@ -4,9 +4,10 @@
 # Desenvolvido por Roger Príncipe (rprincip@redhat.com)
 
 - name: RHEL Health Check
-  hosts: all
+  hosts: clienterhel10.s2linux.local
   gather_facts: true
   vars:
+    coleta_logs_on: false
     arquivo_relatorio: relatorio_{{ inventory_hostname }}.txt
 
   tasks:
@@ -187,6 +188,7 @@
 
     # INICIO DAS COLETAS ADICIONAIS
     - name: Faz o coleta de registros com \"error\" nos logs secure e messages
+      when: coleta_logs_on
       tags:
         - coleta-geral
       ansible.builtin.command: grep -i error /var/log/secure /var/log/messages
@@ -322,17 +324,16 @@
         coletas: |
           *** UPTIME + LOAD AVERAGE ***
           {{ saida_uptime.stdout }}
-          
+
           *** SITUAÇÃO DO PERFIL DO TUNED ***
           {{ saida_perfiltuned.stdout | default("Sem tuned ativo") }}
-          
+
           *** CONSUMO DE BANDA NAS INTERFACES ***
           {{ saida_script_consumo_interfaces.stdout }}
-          
-          *** PRESENÇA DA STRING 'ERROR' NOS PRINCIPAIS LOGS ***
-          {{ saida_errologs.stdout }}
-          {{ saida_errojournal.stdout }}
 
+          {{ '*** PRESENÇA DA STRING "ERROR" NOS PRINCIPAIS LOGS ***' if coleta_logs_on }}
+          {{ saida_errologs.stdout if coleta_logs_on }}
+          {{ saida_errojournal.stdout if coleta_logs_on }}
 
     - name: Insere as informações no relatório
       tags:
