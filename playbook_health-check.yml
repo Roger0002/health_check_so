@@ -4,7 +4,7 @@
 # Desenvolvido por Roger Príncipe (rprincip@redhat.com)
 
 - name: RHEL Health Check
-  hosts: clienterhel10.s2linux.local
+  hosts: all
   gather_facts: true
   vars:
     coleta_logs_on: false
