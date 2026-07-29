@@ -1,0 +1,255 @@
+---
+
+# Playbook de Health Check de SO
+# Desenvolvido por Roger Príncipe (rprincip@redhat.com)
+
+- name: RHEL Health Check
+  hosts:
+    - clienterhel9.s2linux.local
+    - clienterhel8.s2linux.local
+    - clienterhel10.s2linux.local
+  gather_facts: true
+  vars:
+    coleta_logs_on: false
+
+  tasks:
+    # COLETA DE FACTS ADICIONAIS
+    - name: Coleta os facts sobre os serviços
+      tags:
+        - seguranca-geral
+        - rede-geral
+        - lvm-geral
+        - authenticacao-geral
+        - miscelanea-geral
+        - acesso-conteudo-geral
+        - logging-geral
+        - coleta-geral
+      ansible.builtin.service_facts:
+
+    # TESTES DE AUTENTICAÇÃO
+    - name: Verifica uso do sss no /etc/nsswitch.conf
+      tags:
+        - authenticacao-geral
+      ansible.builtin.import_role:
+        name: teste_nsswitch
+
+    - name: Verifica conectividade com LDAP
+      tags:
+        - authenticacao-geral
+      ansible.builtin.import_role:
+        name: teste_ldap
+
+    - name: Verifica daemon do sssd
+      tags:
+        - authenticacao-geral
+      ansible.builtin.import_role:
+        name: teste_sssd
+
+    # TESTES DE ACESSO A CONTEÚDO
+    - name: Verifica se os repositórios padrão estão ativos
+      tags:
+        - acesso-conteudo-geral
+      ansible.builtin.import_role:
+        name: testerepodefaults
+
+    - name: Verifica se é possível baixar pacotes
+      tags:
+        - acesso-conteudo-geral
+      ansible.builtin.import_role:
+        name: testedownloadpackages
+
+    - name: Verifica se a máquina está registrada no insights
+      tags:
+        - acesso-conteudo-geral
+      ansible.builtin.import_role:
+        name: testeregistroinsights
+
+    # TESTES DE LOGGING
+    - name: Verifica se o daemon do rsyslog está no ar e habilitado para inicializar no boot
+      tags:
+        - logging-geral
+      ansible.builtin.import_role:
+        name: testersyslog
+
+    - name: Verifica se o rsyslog está garantindo a escrita nos arquivos de log
+      tags:
+        - logging-geral
+      ansible.builtin.import_role:
+        name: testeescritalogs
+
+    # TESTES DE SEGURANÇA
+    - name: Verifica a presença de bugs
+      tags:
+        - seguranca-geral
+      ansible.builtin.import_role:
+        name: testebugs
+
+    - name: Verifica a presença de falhas de seguranca
+      tags:
+        - seguranca-geral
+      ansible.builtin.import_role:
+        name: testefalhaseguranca
+
+    - name: Verifica o audit
+      tags:
+        - seguranca-geral
+      ansible.builtin.import_role:
+        name: testeaudit
+
+    - name: Verifica o SElinux
+      tags:
+        - seguranca-geral
+      ansible.builtin.import_role:
+        name: testeselinux
+
+    - name: Verifica se há violações do SElinux
+      tags:
+        - seguranca-geral
+      ansible.builtin.import_role:
+        name: testeselinuxviolations
+
+    - name: Verifica o firewalld
+      tags:
+        - seguranca-geral
+      ansible.builtin.import_role:
+        name: testefirewalld
+
+    # TESTES DE REDE
+    - name: Verifica a resolução de DNS (externa)
+      tags:
+        - rede-geral
+      ansible.builtin.import_role:
+        name: testeresolucaodnsexterno
+
+    - name: Verifica hostname no /etc/hosts
+      tags:
+        - rede-geral
+      ansible.builtin.import_role:
+        name: testeetchosts
+
+    - name: Verifica incremento agressivo de pacotes com erro
+      tags:
+        - rede-geral
+      ansible.builtin.import_role:
+        name: testetxrx
+
+    - name: Verifica sincronismo com fontes NTP
+      tags:
+        - rede-geral
+      ansible.builtin.import_role:
+        name: testentp
+
+    - name: Verifica os metadados dos VGs
+      tags:
+        - lvm-geral
+      ansible.builtin.import_role:
+        name: testemetadados
+
+    - name: Verifica de erro em comando de LVM
+      tags:
+        - lvm-geral
+      ansible.builtin.import_role:
+        name: testeerrocomandopvs
+
+    - name: Verifica se backup de metadados está ativo
+      tags:
+        - lvm-geral
+      ansible.builtin.import_role:
+        name: testebackupmetadados
+
+    # TESTES - MISCELÂNEA
+    - name: Verifica a coleta do sysstat
+      tags:
+        - miscelanea-geral
+      ansible.builtin.import_role:
+        name: testesar
+
+    - name: Verifica a integridade da base RPM
+      tags:
+        - miscelanea-geral
+      ansible.builtin.import_role:
+        name: testebaserpm
+
+    - name: Verifica a necessidade de reboot
+      tags:
+        - miscelanea-geral
+      ansible.builtin.import_role:
+        name: testerebootrequerido
+
+    - name: Verifica se o /usr não está apartado
+      tags:
+        - miscelanea-geral
+      ansible.builtin.import_role:
+        name: testeusrnaoapartado
+
+    - name: Verifica se o kdump está ativado
+      tags:
+        - miscelanea-geral
+      ansible.builtin.import_role:
+        name: testekdump
+
+    # INICIO DAS COLETAS ADICIONAIS
+    - name: Faz o coleta de registros com \"error\" nos logs secure e messages
+      when: coleta_logs_on
+      tags:
+        - coleta-geral
+      ansible.builtin.command: grep -i error /var/log/secure /var/log/messages
+      failed_when: false
+      changed_when: false
+      register: saida_errologs
+
+    - name: Faz a coleta de registros com \"error\" no journal
+      tags:
+        - coleta-geral
+      ansible.builtin.command: journalctl --no-pager -g error
+      failed_when: false
+      changed_when: false
+      register: saida_errojournal
+
+    - name: Faz a coleta do perfil do tuned (caso ele esteja em execução)
+      tags:
+        - coleta-geral
+      when: ansible_facts['services']['tuned.service'] is defined
+      ansible.builtin.command: tuned-adm active
+      failed_when: false
+      changed_when: false
+      register: saida_perfiltuned
+
+    - name: Faz a coleta do uptime da máquina + load average
+      tags:
+        - coleta-geral
+      ansible.builtin.command: uptime
+      failed_when: false
+      changed_when: false
+      register: saida_uptime
+
+    - name: Coleta do consumo de banda nas interfaces
+      tags:
+        - coleta-geral
+      block:
+        - name: Copia o script para a máquina
+          ansible.builtin.copy:
+            src: script_measure_bandwidth.sh
+            dest: /tmp
+
+        - name: Executa o script, capturando sua saída
+          ansible.builtin.command: bash /tmp/script_measure_bandwidth.sh
+          failed_when: false
+          changed_when: false
+          register: saida_script_consumo_interfaces
+
+        - name: Remove o script
+          ansible.builtin.file:
+            path: /tmp/script_measure_bandwidth.sh
+            state: absent
+
+    - name: Gera o relatório
+      delegate_to: localhost
+      vars:
+        ansible_connection: local
+      tags:
+        - always
+      ansible.builtin.template:
+        src: resultado.html.j2
+        dest: ./relatorio_{{ inventory_hostname }}.html
+...

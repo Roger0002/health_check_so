@@ -1,0 +1,566 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Health Check Linux</title>
+
+<style>
+*{
+    box-sizing:border-box;
+}
+body{
+    margin:0;
+    font-family:Segoe UI,Arial,sans-serif;
+    background:#f4f6f9;
+    color:#222;
+}
+
+header{
+    background:#1f2937;
+    color:#fff;
+    padding:25px 35px;
+}
+
+header h1{
+    margin:0;
+    font-size:42px;
+}
+
+header p{
+    margin-top:10px;
+    font-size:20px;
+}
+
+.container{
+    width:95%;
+    max-width:1400px;
+    margin:auto;
+    padding:20px;
+}
+
+.grid{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(320px,1fr));
+    gap:20px;
+    margin-bottom:25px;
+}
+
+.metric{
+    background:#fff;
+    border-radius:8px;
+    padding:22px;
+    box-shadow:0 2px 8px rgba(0,0,0,.12);
+}
+
+.metric h3{
+    margin:0;
+    color:#555;
+    font-size:18px;
+}
+
+.metric p{
+    margin-top:18px;
+    font-size:22px;
+    font-weight:bold;
+}
+
+.card{
+    background:#fff;
+    border-radius:8px;
+    overflow:hidden;
+    box-shadow:0 2px 8px rgba(0,0,0,.12);
+    margin-bottom:24px;
+}
+
+.card h2{
+    margin:0;
+    padding:15px;
+    background:#374151;
+    color:white;
+    font-size:30px;
+}
+
+.server-summary {
+    background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);
+    color: #ffffff;
+    border-radius: 10px;
+    padding: 24px 28px;
+    margin-bottom: 25px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+.server-summary h2 {
+    margin: 0 0 20px 0;
+    padding: 0;
+    background: transparent;
+    font-size: 24px;
+    color: #38bdf8;
+    border-bottom: 1px solid #334155;
+    padding-bottom: 12px;
+}
+
+.server-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr); /* Força exatamente 4 colunas alinhadas */
+    gap: 16px;
+}
+
+.server-item {
+    background: rgba(255, 255, 255, 0.05);
+    padding: 14px 18px;
+    border-radius: 6px;
+    border-left: 4px solid #38bdf8;
+}
+
+.server-item .label {
+    font-size: 13px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    color: #94a3b8;
+    margin-bottom: 6px;
+}
+
+.server-item .value {
+    font-size: 17px;
+    font-weight: 600;
+    color: #f8fafc;
+    word-break: break-all;
+}
+
+.server-item.full-width {
+    grid-column: 1 / -1;
+}
+
+.server-item .label {
+    font-size: 13px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    color: #94a3b8;
+    margin-bottom: 6px;
+}
+
+.server-item .value {
+font-size: 17px;
+    font-weight: 600;
+    color: #f8fafc;
+    word-break: break-all;
+    line-height: 1.4;
+}
+
+.server-item .value pre {
+    margin: 0;
+    padding: 0;
+    background: transparent;
+    color: #f8fafc;
+    font-size: 15px;
+    font-family: inherit; /* Remove a fonte de terminal para combinar mais com o design */
+    white-space: pre-wrap;
+}
+
+.sub-text {
+    color: #94a3b8;
+    font-size: 14px;
+    font-weight: 400;
+}
+
+.server-item.span-2 {
+    grid-column: span 2; /* Ocupa 2 colunas */
+}
+
+.server-item.full-width {
+    grid-column: 1 / -1; /* Ocupa a linha inteira (4 colunas) */
+}
+
+.server-item .label {
+    font-size: 13px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    color: #94a3b8;
+    margin-bottom: 6px;
+}
+
+.server-item .value {
+    font-size: 17px;
+    font-weight: 600;
+    color: #f8fafc;
+    word-break: break-all;
+    line-height: 1.4;
+}
+
+.server-item .value pre {
+    margin: 0;
+    padding: 0;
+    background: transparent;
+    color: #f8fafc;
+    font-size: 15px;
+    font-family: inherit;
+    white-space: pre-wrap;
+}
+
+.sub-text {
+    color: #94a3b8;
+    font-size: 14px;
+    font-weight: 400;
+}
+
+/* Responsividade para telas menores */
+@media (max-width: 1024px) {
+    .server-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+    .server-item.span-2 {
+        grid-column: span 2;
+    }
+}
+
+@media (max-width: 640px) {
+    .server-grid {
+        grid-template-columns: 1fr;
+    }
+    .server-item.span-2,
+    .server-item.full-width {
+        grid-column: 1 / -1;
+    }
+}
+
+table{
+    width:100%;
+    border-collapse:collapse;
+    table-layout:fixed;
+}
+
+th:first-child,
+td:first-child{
+    width:75%;
+}
+
+th:last-child,
+td:last-child{
+    width:25%;
+    text-align:center;
+}
+
+th{
+    background:#eef2f7;
+    padding:14px;
+    text-align:left;
+    font-size:20px;
+}
+
+td{
+    padding:14px;
+    border-top:1px solid #ddd;
+    font-size:17px;
+}
+
+.status{
+    display:inline-block;
+    min-width:95px;
+    padding:6px 18px;
+    border-radius:20px;
+    color:#fff;
+    font-weight:bold;
+    text-align:center;
+}
+
+.OK{
+    background:#2e7d32;
+}
+
+.FAIL{
+    background:#c62828;
+}
+
+.info{
+    background:#1565c0;
+}
+
+pre{
+    margin:0;
+    padding:20px;
+    background:#111827;
+    color:#e5e7eb;
+    overflow:auto;
+    font-size:14px;
+}
+
+footer{
+    text-align:center;
+    padding:25px;
+    color:#666;
+}
+</style>
+</head>
+
+<body>
+
+<header>
+<h1>Health Check Linux</h1>
+<p>Resumo Executivo do Sistema</p>
+</header>
+
+<div class="container">
+
+<div class="server-summary">
+    <h2>Informações do Servidor & Coletas</h2>
+    <div class="server-grid">
+        <!-- LINHA 1: 4 Itens Individuais (1 coluna cada) -->
+        <div class="server-item">
+            <div class="label">Hostname</div>
+            <div class="value">{{ ansible_facts['fqdn'] }}</div>
+        </div>
+        <div class="server-item">
+            <div class="label">Endereços IPv4</div>
+            <div class="value"><pre>{% for item in ansible_facts['all_ipv4_addresses'] %}{{ item }}{{ '\n' }}{% endfor %}</pre></div>
+        </div>
+        <div class="server-item">
+            <div class="label">Sistema Operacional</div>
+            <div class="value">{{ ansible_facts['distribution'] }} {{ ansible_facts['distribution_version'] }}</div>
+        </div>
+        <div class="server-item">
+            <div class="label">Versão do Kernel</div>
+            <div class="value">{{ ansible_facts['kernel'] }}</div>
+        </div>
+
+        <!-- LINHA 2: 2 Itens Maiores (2 colunas cada = 4 colunas) -->
+        <div class="server-item span-2">
+            <div class="label">Uptime & Load Average</div>
+            <div class="value">
+            <pre>{{ saida_uptime.stdout }}</pre>
+            </div>
+        </div>
+
+        <div class="server-item span-2">
+            <div class="label">Situação Perfil Tuned</div>
+            <div class="value"><pre>{{ saida_perfiltuned.stdout | default("Sem tuned ativo") }}</pre></div>
+        </div>
+
+        <!-- LINHA 3: 1 Item em Largura Total (4 colunas) -->
+        <div class="server-item full-width">
+            <div class="label">Consumo de Banda nas Interfaces</div>
+            <div class="value"><pre>{{ saida_script_consumo_interfaces.stdout }}</pre></div>
+        </div>
+    </div>
+</div>
+
+<div class="card">
+
+<h2>Autenticação</h2>
+
+<table>
+
+<tr>
+<td>NSSwitch</td>
+<td><span class="status {{ teste_nsswitch }}">{{ teste_nsswitch }}</span></td>
+</tr>
+
+<tr>
+<td>Conectividade LDAP</td>
+<td><span class="status {{ teste_ldap }}">{{ teste_ldap }}</span></td>
+</tr>
+
+<tr>
+<td>Daemon SSSD</td>
+<td><span class="status {{ teste_sssd }}">{{ teste_sssd }}</span></td>
+</tr>
+
+</table>
+
+</div>
+
+<div class="card">
+
+<h2>Acesso a Conteúdo</h2>
+
+<table>
+
+<tr>
+<td>Repositórios padrão</td>
+<td><span class="status {{ teste_repodefaults }}">{{ teste_repodefaults }}</span></td>
+</tr>
+
+<tr>
+<td>Download de pacotes</td>
+<td><span class="status {{ teste_downloadpackages }}">{{ teste_downloadpackages }}</span></td>
+</tr>
+
+<tr>
+<td>Registro no Insights</td>
+<td><span class="status {{ teste_registroinsights }}">{{ teste_registroinsights }}</span></td>
+</tr>
+
+</table>
+
+</div>
+
+<div class="card">
+
+<h2>Logging</h2>
+
+<table>
+
+
+<tr>
+<td>Daemon rsyslog</td>
+<td><span class="status {{ teste_rsyslog }}">{{ teste_rsyslog }}</span></td>
+</tr>
+
+<tr>
+<td>Escrita nos logs</td>
+<td><span class="status {{ teste_escritalogs }}">{{ teste_escritalogs }}</span></td>
+</tr>
+
+</table>
+
+</div>
+
+<div class="card">
+
+<h2>Segurança</h2>
+
+<table>
+
+<tr>
+<td>Bugs</td>
+<td><span class="status {{ teste_bugs }}">{{ teste_bugs }}</span></td>
+</tr>
+
+<tr>
+<td>Falhas de Segurança</td>
+<td><span class="status {{ teste_falhaseguranca }}">{{ teste_falhaseguranca }}</span></td>
+</tr>
+
+<tr>
+<td>Audit</td>
+<td><span class="status {{ teste_audit }}">{{ teste_audit }}</span></td>
+</tr>
+
+<tr>
+<td>SELinux</td>
+<td><span class="status {{ teste_selinux }}">{{ teste_selinux }}</span></td>
+</tr>
+
+<tr>
+<td>Violações SELinux</td>
+<td><span class="status {{ teste_selinuxviolations }}">{{ teste_selinuxviolations }}</span></td>
+</tr>
+
+<tr>
+<td>Firewalld</td>
+<td><span class="status {{ teste_firewalld }}">{{ teste_firewalld }}</span></td>
+</tr>
+
+</table>
+
+</div>
+
+<div class="card">
+
+<h2>Rede</h2>
+
+<table>
+
+<tr>
+<td>DNS Externo</td>
+<td><span class="status {{ teste_resolucaodnsexterno }}">{{ teste_resolucaodnsexterno }}</span></td>
+</tr>
+
+<tr>
+<td>Hostname em /etc/hosts</td>
+<td><span class="status {{ teste_etchosts }}">{{ teste_etchosts }}</span></td>
+</tr>
+
+<tr>
+<td>Pacotes com erro</td>
+<td><span class="status {{ teste_txrx }}">{{ teste_txrx }}</span></td>
+</tr>
+
+<tr>
+<td>Sincronismo NTP</td>
+<td><span class="status {{ teste_ntp }}">{{ teste_ntp }}</span></td>
+</tr>
+
+</table>
+
+</div>
+
+<div class="card">
+
+<h2>LVM</h2>
+
+<table>
+
+<tr>
+<td>Metadados dos VGs</td>
+<td><span class="status {{ teste_metadados }}">{{ teste_metadados }}</span></td>
+</tr>
+
+<tr>
+<td>Comando pvs</td>
+<td><span class="status {{ teste_errocomandopvs }}">{{ teste_errocomandopvs }}</span></td>
+</tr>
+
+<tr>
+<td>Backup de Metadados</td>
+<td><span class="status {{ teste_backupmetadados }}">{{ teste_backupmetadados }}</span></td>
+</tr>
+
+</table>
+
+</div>
+
+<div class="card">
+
+<h2>Miscelânea</h2>
+
+<table>
+
+<tr>
+<td>Coleta de recursos</td>
+<td><span class="status {{ teste_sar }}">{{ teste_sar }}</span></td>
+</tr>
+
+<tr>
+<td>Integridade RPM</td>
+<td><span class="status {{ teste_baserpm }}">{{ teste_baserpm }}</span></td>
+</tr>
+
+<tr>
+<td>Necessidade de reboot</td>
+<td><span class="status {{ teste_rebootrequerido }}">{{ teste_rebootrequerido }}</span></td>
+</tr>
+
+<tr>
+<td>/usr</td>
+<td><span class="status {{ teste_usrnaoapartado }}">{{ teste_usrnaoapartado }}</span></td>
+</tr>
+
+<tr>
+<td>Kdump</td>
+<td><span class="status {{ teste_kdump }}">{{ teste_kdump }}</span></td>
+</tr>
+
+</table>
+
+
+
+</div>
+
+{% if coleta_logs_on %}
+<div class="card">
+<h2>Presença da string "error" nos principais logs</h2>
+<pre>{{ saida_errologs.stdout }}
+{{ saida_errojournal.stdout }}</pre>
+</div>
+{% endif %}
+
+</div>
+
+<footer>
+Health Check Linux • Relatório Gerencial
+</footer>
+
+</body>
+</html>
