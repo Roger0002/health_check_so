@@ -53,7 +53,3 @@ ansible-playbook -e dir_output=/caminho/para/meus/relatorios playbook_health-che
 ```bash
 ansible-playbook -e "coleta_logs_on=true dir_output=/tmp/relatorios_saude" playbook_health-check_html_output.yml
 ```
-
-## 📝 Contribuição
-
-Sinta-se à vontade para abrir *Issues* relatando bugs ou sugerir melhorias. Para novas implementações, por favor, envie um *Pull Request*.
