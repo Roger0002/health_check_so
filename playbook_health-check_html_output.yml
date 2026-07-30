@@ -8,6 +8,7 @@
   gather_facts: true
   vars:
     coleta_logs_on: false
+    dir_output: '.'
 
   tasks:
     # COLETA DE FACTS ADICIONAIS
@@ -249,5 +250,5 @@
         - always
       ansible.builtin.template:
         src: resultado.html.j2
-        dest: ./relatorio_{{ inventory_hostname }}.html
+        dest: "{{ dir_output }}/relatorio_{{ inventory_hostname }}.html"
 ...
