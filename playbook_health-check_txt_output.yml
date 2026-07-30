@@ -9,6 +9,7 @@
   vars:
     coleta_logs_on: false
     arquivo_relatorio: relatorio_{{ inventory_hostname }}.txt
+    dir_output: '.'
 
   tasks:
     # COLETA DE FACTS ADICIONAIS
@@ -197,6 +198,7 @@
       register: saida_errologs
 
     - name: Faz a coleta de registros com \"error\" no journal
+      when: coleta_logs_on
       tags:
         - coleta-geral
       ansible.builtin.command: journalctl --no-pager -g error
@@ -357,5 +359,5 @@
       ansible.builtin.fetch:
         flat: true
         src: /tmp/{{ arquivo_relatorio }}
-        dest: ./
+        dest: "{{ dir_output }}/"
 ...
