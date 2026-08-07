@@ -1,0 +1,409 @@
+{% macro render_status(status_val) %}
+  {% if status_val == 'OK' %}
+    <span class="pf-v6-c-label status-OK">
+      <span class="pf-v6-c-label__content"><i class="fas fa-check-circle" aria-hidden="true"></i> OK</span>
+    </span>
+  {% elif status_val == 'FAIL' %}
+    <span class="pf-v6-c-label status-FAIL">
+      <span class="pf-v6-c-label__content"><i class="fas fa-exclamation-triangle" aria-hidden="true"></i> FAIL</span>
+    </span>
+  {% else %}
+    <span class="pf-v6-c-label status-NA">
+      <span class="pf-v6-c-label__content"><i class="fas fa-info-circle" aria-hidden="true"></i> {{ status_val }}</span>
+    </span>
+  {% endif %}
+{% endmacro %}
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Health Check Linux</title>
+    
+    <!-- PatternFly 6.0 Core CSS & FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@patternfly/patternfly@6/patternfly.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+    <style>
+        body {
+            background-color: #f0f2f5;
+            margin: 0;
+            padding: 0;
+            font-family: RedHatText, helvetica, arial, sans-serif;
+            color: #151515;
+        }
+
+        /* Cabecalho Red Hat Masthead */
+        .hc-header {
+            background-color: #151515;
+            border-bottom: 4px solid #ee0000;
+            padding: 24px 32px;
+            color: #ffffff;
+        }
+        .hc-header h1 {
+            margin: 0;
+            font-size: 26px;
+            font-weight: 700;
+        }
+        .hc-header p {
+            margin: 4px 0 0 0;
+            color: #b8bbbe;
+            font-size: 14px;
+        }
+
+        /* Container Principal Centralizado */
+        .hc-container {
+            max-width: 1400px;
+            margin: 24px auto;
+            padding: 0 20px;
+        }
+
+        /* Grid para Informações do Servidor */
+        .server-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 16px;
+        }
+        .server-item {
+            background: #f8fafc;
+            border: 1px solid #e2e8f0;
+            border-left: 4px solid #06c;
+            border-radius: 4px;
+            padding: 12px 16px;
+        }
+        .server-item .label {
+            font-size: 11px;
+            text-transform: uppercase;
+            font-weight: 700;
+            color: #6a6e73;
+            letter-spacing: 0.5px;
+            margin-bottom: 4px;
+        }
+        .server-item .value {
+            font-size: 15px;
+            font-weight: 600;
+            color: #151515;
+        }
+        .span-2 { grid-column: span 2; }
+        .full-width { grid-column: 1 / -1; }
+
+        /* Grid de 2 Colunas para os Cards de Teste */
+        .tests-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 20px;
+            margin-top: 20px;
+        }
+
+        /* Espaçamento das linhas da tabela (resolve o problema dos itens grudados) */
+        .pf-v6-c-table td {
+            padding-top: 10px !important;
+            padding-bottom: 10px !important;
+            vertical-align: middle;
+        }
+
+        @media (max-width: 992px) {
+            .server-grid { grid-template-columns: repeat(2, 1fr); }
+            .tests-grid { grid-template-columns: 1fr; }
+            .span-2 { grid-column: 1 / -1; }
+        }
+
+        /* Estilização dos Badges de Status (Pill com borda de 2px idêntica à imagem) */
+        .pf-v6-c-label {
+            display: inline-flex;
+            align-items: center;
+            padding: 6px 16px;
+            font-weight: 700;
+            font-size: 13px;
+            border-radius: 30px;
+            background-color: #e2e8f0;
+            color: #151515;
+        }
+        .pf-v6-c-label i { 
+            margin-right: 8px; 
+            font-size: 14px;
+        }
+
+        .status-OK {
+            border: 2px solid #2e7d32;
+        }
+        .status-OK i {
+            color: #151515;
+        }
+
+        .status-FAIL {
+            border: 2px solid #c62828;
+        }
+        .status-FAIL i {
+            color: #151515;
+        }
+
+        .status-NA {
+            border: 2px solid #0284c7;
+        }
+        .status-NA i {
+            color: #151515;
+        }
+
+        /* Formatador para blocos de terminal */
+        pre.terminal-box {
+            background-color: #151515;
+            color: #00ff66;
+            padding: 12px 16px;
+            border-radius: 4px;
+            font-family: monospace;
+            font-size: 13px;
+            white-space: pre-wrap;
+            word-break: break-all;
+            margin: 4px 0 0 0;
+        }
+
+        footer {
+            text-align: center;
+            padding: 30px;
+            color: #6a6e73;
+            font-size: 13px;
+        }
+    </style>
+</head>
+
+<body>
+
+    <header class="hc-header">
+        <h1>Health Check Linux</h1>
+        <p>Resumo Executivo do Sistema</p>
+    </header>
+
+    <div class="hc-container">
+
+        <!-- Card: Informações do Servidor -->
+        <div class="pf-v6-c-card">
+            <div class="pf-v6-c-card__header">
+                <div class="pf-v6-c-card__title">
+                    <h2 class="pf-v6-c-title pf-v6-m-lg">Informações do Servidor & Coletas</h2>
+                </div>
+            </div>
+            <div class="pf-v6-c-card__body">
+                <div class="server-grid">
+                    <div class="server-item">
+                        <div class="label">Hostname</div>
+                        <div class="value">{{ ansible_facts['fqdn'] }}</div>
+                    </div>
+                    <div class="server-item">
+                        <div class="label">Endereços IPv4</div>
+                        <div class="value">
+                            {% for item in ansible_facts['all_ipv4_addresses'] %}{{ item }}<br>{% endfor %}
+                        </div>
+                    </div>
+                    <div class="server-item">
+                        <div class="label">Sistema Operacional</div>
+                        <div class="value">{{ ansible_facts['distribution'] }} {{ ansible_facts['distribution_version'] }}</div>
+                    </div>
+                    <div class="server-item">
+                        <div class="label">Versão do Kernel</div>
+                        <div class="value">{{ ansible_facts['kernel'] }}</div>
+                    </div>
+
+                    <div class="server-item span-2">
+                        <div class="label">Uptime & Load Average</div>
+                        <div class="value"><pre class="terminal-box">{{ saida_uptime.stdout }}</pre></div>
+                    </div>
+
+                    <div class="server-item span-2">
+                        <div class="label">Situação Perfil Tuned</div>
+                        <div class="value"><pre class="terminal-box">{{ saida_perfiltuned.stdout | default("Sem tuned ativo") }}</pre></div>
+                    </div>
+
+                    <div class="server-item full-width">
+                        <div class="label">Consumo de Banda nas Interfaces</div>
+                        <div class="value"><pre class="terminal-box">{{ saida_script_consumo_interfaces.stdout }}</pre></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Grid 2 Colunas para os Cards de Testes -->
+        <div class="tests-grid">
+
+            <!-- Autenticação -->
+            <div class="pf-v6-c-card">
+                <div class="pf-v6-c-card__header">
+                    <h2 class="pf-v6-c-title pf-v6-m-md">Autenticação</h2>
+                </div>
+                <div class="pf-v6-c-card__body pf-v6-m-no-fill">
+                    <table class="pf-v6-c-table" role="grid">
+                        <thead>
+                            <tr>
+                                <th>Item de Verificação</th>
+                                <th style="text-align: right;">Status</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr><td>NSSwitch</td><td style="text-align: right;">{{ render_status(teste_nsswitch) }}</td></tr>
+                            <tr><td>Conectividade LDAP</td><td style="text-align: right;">{{ render_status(teste_ldap) }}</td></tr>
+                            <tr><td>Daemon SSSD</td><td style="text-align: right;">{{ render_status(teste_sssd) }}</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- Acesso a Conteúdo -->
+            <div class="pf-v6-c-card">
+                <div class="pf-v6-c-card__header">
+                    <h2 class="pf-v6-c-title pf-v6-m-md">Acesso a Conteúdo</h2>
+                </div>
+                <div class="pf-v6-c-card__body pf-v6-m-no-fill">
+                    <table class="pf-v6-c-table" role="grid">
+                        <thead>
+                            <tr>
+                                <th>Item de Verificação</th>
+                                <th style="text-align: right;">Status</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr><td>Repositórios padrão</td><td style="text-align: right;">{{ render_status(teste_repodefaults) }}</td></tr>
+                            <tr><td>Download de pacotes</td><td style="text-align: right;">{{ render_status(teste_downloadpackages) }}</td></tr>
+                            <tr><td>Registro no Insights</td><td style="text-align: right;">{{ render_status(teste_registroinsights) }}</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- Logging -->
+            <div class="pf-v6-c-card">
+                <div class="pf-v6-c-card__header">
+                    <h2 class="pf-v6-c-title pf-v6-m-md">Logging</h2>
+                </div>
+                <div class="pf-v6-c-card__body pf-v6-m-no-fill">
+                    <table class="pf-v6-c-table" role="grid">
+                        <thead>
+                            <tr>
+                                <th>Item de Verificação</th>
+                                <th style="text-align: right;">Status</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr><td>Daemon rsyslog</td><td style="text-align: right;">{{ render_status(teste_rsyslog) }}</td></tr>
+                            <tr><td>Escrita nos logs</td><td style="text-align: right;">{{ render_status(teste_escritalogs) }}</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- Rede -->
+            <div class="pf-v6-c-card">
+                <div class="pf-v6-c-card__header">
+                    <h2 class="pf-v6-c-title pf-v6-m-md">Rede</h2>
+                </div>
+                <div class="pf-v6-c-card__body pf-v6-m-no-fill">
+                    <table class="pf-v6-c-table" role="grid">
+                        <thead>
+                            <tr>
+                                <th>Item de Verificação</th>
+                                <th style="text-align: right;">Status</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr><td>DNS Externo</td><td style="text-align: right;">{{ render_status(teste_resolucaodnsexterno) }}</td></tr>
+                            <tr><td>Hostname em /etc/hosts</td><td style="text-align: right;">{{ render_status(teste_etchosts) }}</td></tr>
+                            <tr><td>Pacotes com erro</td><td style="text-align: right;">{{ render_status(teste_txrx) }}</td></tr>
+                            <tr><td>Sincronismo NTP</td><td style="text-align: right;">{{ render_status(teste_ntp) }}</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- Segurança -->
+            <div class="pf-v6-c-card">
+                <div class="pf-v6-c-card__header">
+                    <h2 class="pf-v6-c-title pf-v6-m-md">Segurança</h2>
+                </div>
+                <div class="pf-v6-c-card__body pf-v6-m-no-fill">
+                    <table class="pf-v6-c-table" role="grid">
+                        <thead>
+                            <tr>
+                                <th>Item de Verificação</th>
+                                <th style="text-align: right;">Status</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr><td>Bugs</td><td style="text-align: right;">{{ render_status(teste_bugs) }}</td></tr>
+                            <tr><td>Falhas de Segurança</td><td style="text-align: right;">{{ render_status(teste_falhaseguranca) }}</td></tr>
+                            <tr><td>Audit</td><td style="text-align: right;">{{ render_status(teste_audit) }}</td></tr>
+                            <tr><td>SELinux</td><td style="text-align: right;">{{ render_status(teste_selinux) }}</td></tr>
+                            <tr><td>Violações SELinux</td><td style="text-align: right;">{{ render_status(teste_selinuxviolations) }}</td></tr>
+                            <tr><td>Firewalld</td><td style="text-align: right;">{{ render_status(teste_firewalld) }}</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- LVM -->
+            <div class="pf-v6-c-card">
+                <div class="pf-v6-c-card__header">
+                    <h2 class="pf-v6-c-title pf-v6-m-md">LVM</h2>
+                </div>
+                <div class="pf-v6-c-card__body pf-v6-m-no-fill">
+                    <table class="pf-v6-c-table" role="grid">
+                        <thead>
+                            <tr>
+                                <th>Item de Verificação</th>
+                                <th style="text-align: right;">Status</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr><td>Metadados dos VGs</td><td style="text-align: right;">{{ render_status(teste_metadados) }}</td></tr>
+                            <tr><td>Comando pvs</td><td style="text-align: right;">{{ render_status(teste_errocomandopvs) }}</td></tr>
+                            <tr><td>Backup de Metadados</td><td style="text-align: right;">{{ render_status(teste_backupmetadados) }}</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- Miscelânea -->
+            <div class="pf-v6-c-card" style="grid-column: 1 / -1;">
+                <div class="pf-v6-c-card__header">
+                    <h2 class="pf-v6-c-title pf-v6-m-md">Miscelânea</h2>
+                </div>
+                <div class="pf-v6-c-card__body pf-v6-m-no-fill">
+                    <table class="pf-v6-c-table" role="grid">
+                        <thead>
+                            <tr>
+                                <th>Item de Verificação</th>
+                                <th style="text-align: right;">Status</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr><td>Coleta de recursos</td><td style="text-align: right;">{{ render_status(teste_sar) }}</td></tr>
+                            <tr><td>Integridade RPM</td><td style="text-align: right;">{{ render_status(teste_baserpm) }}</td></tr>
+                            <tr><td>Necessidade de reboot</td><td style="text-align: right;">{{ render_status(teste_rebootrequerido) }}</td></tr>
+                            <tr><td>/usr não apartado</td><td style="text-align: right;">{{ render_status(teste_usrnaoapartado) }}</td></tr>
+                            <tr><td>Kdump</td><td style="text-align: right;">{{ render_status(teste_kdump) }}</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+        </div>
+
+        <!-- Seção de Logs Condicional -->
+        {% if coleta_logs_on %}
+        <div class="pf-v6-c-card" style="margin-top: 20px;">
+            <div class="pf-v6-c-card__header">
+                <h2 class="pf-v6-c-title pf-v6-m-lg">Presença da string "error" nos principais logs</h2>
+            </div>
+            <div class="pf-v6-c-card__body">
+                <pre class="terminal-box">{{ saida_errologs.stdout }}
+{{ saida_errojournal.stdout }}</pre>
+            </div>
+        </div>
+        {% endif %}
+
+    </div>
+
+    <footer>
+        Health Check Linux • Relatório Gerencial
+    </footer>
+
+</body>
+</html>
