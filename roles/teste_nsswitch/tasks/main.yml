@@ -5,14 +5,14 @@
       ansible.builtin.slurp:
         src: /etc/nsswitch.conf
       register: raw_output_nsswitch
-      
+
     - name: Testa presença da string "sss" nos itens passwd e group
       loop:
         - passwd
         - group
       ansible.builtin.assert:
         that: "'sss' in raw_output_nsswitch['content'] | b64decode | regex_search('^{{ item }}:.*', multiline=true)"
-     
+
     - name: Considera OK para o relatório final
       ansible.builtin.set_fact:
         teste_nsswitch: OK
@@ -23,4 +23,3 @@
         teste_nsswitch: FAIL
 
 ...
-
