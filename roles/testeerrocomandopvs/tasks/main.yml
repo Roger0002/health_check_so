@@ -5,7 +5,7 @@
       ansible.builtin.command: pvs
       register: pvs_output
 
-    - name: Assegura que não hajasaída de erro no comando pvs
+    - name: Assegura que não haja saída de erro no comando pvs
       ansible.builtin.assert:
         that: pvs_output.stderr | length == 0
 
