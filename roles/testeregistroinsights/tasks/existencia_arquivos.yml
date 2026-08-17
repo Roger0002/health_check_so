@@ -3,7 +3,7 @@
   ansible.builtin.stat:
     path: "{{ item }}"
   register: info_arquivo
-                  
+
 - name: Testa existência
   ansible.builtin.assert:
     that: info_arquivo.stat.exists
